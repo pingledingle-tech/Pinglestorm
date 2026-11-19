@@ -1,0 +1,57 @@
+name: Pingle build Windows
+
+# Manual only: a full viewer build is heavy. Start it from the Actions tab
+# ("Run workflow") or with the workflow dispatch API. It never runs on pull
+# requests or pushes.
+# Open configuration only (ReleaseFS_open): no FMOD, no KDU, no secrets.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  AUTOBUILD_VSVER: "170"        # Visual Studio 2022
+  AUTOBUILD_VARIABLES_FILE: ${{ github.workspace }}/build-variables/variables
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          repository: FirestormViewer/fs-build-variables
+          path: build-variables
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - name: Install autobuild
+        shell: bash
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install git+https://github.com/secondlife/autobuild.git#egg=autobuild
+          autobuild --version
+      - name: Configure (open build)
+        shell: bash
+        run: autobuild configure -A 64 -c ReleaseFS_open -- --chan Pinglestorm
+      - name: Build
+        shell: bash
+        run: autobuild build -A 64 -c ReleaseFS_open --no-configure
+      - name: Keep the build folder listing
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: ls -d build-*/ build-*/newview/* 2>/dev/null | head -50 || true
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: pinglestorm-windows-base
+          path: |
+            build-*/newview/Release/**
+            build-*/logs/**
+          if-no-files-found: warn
+          retention-days: 7

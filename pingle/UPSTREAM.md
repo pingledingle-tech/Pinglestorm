@@ -31,10 +31,9 @@ Later, as its own job, not now: fetch the new release branch, merge it into a br
 
 ## Building
 
-Not set up yet. Plan, in this order (see `DECISIONS.md`):
-
-1. Build the untouched base once, to learn whether it builds at all (Windows, `ReleaseFS_open`, Visual Studio 2022, Python 3 and autobuild per Firestorm's own build page).
-2. Only then decide where builds run (own computer or GitHub Actions) and add a workflow.
+- **Windows, open build:** `.github/workflows/pingle-build-windows.yml`, started by hand from the Actions tab ("Run workflow") on `main`. It builds the untouched base with `ReleaseFS_open` (no FMOD, no KDU) on a GitHub-hosted `windows-2022` runner and keeps the result for 7 days as the artifact `pinglestorm-windows-base`.
+- **Not yet known:** whether it builds, how long it takes, and where the finished program ends up (the artifact paths are a first guess). The first run answers that; fix this section then.
+- Firestorm's own build page (`doc/building_windows.md`) is the reference for building on your own computer.
 
 ## Files of ours that live in Firestorm's folders
 
