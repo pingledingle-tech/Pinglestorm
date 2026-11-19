@@ -18,4 +18,4 @@ A pick is a change taken from someone else's fork of Firestorm (or of another vi
 
 | Date | Source (repo @ commit) | What | Licence | Credit | Pull request | Built and tried |
 |---|---|---|---|---|---|---|
-| | | | | | | |
+| 2026-11-19 | `snapshot/trish-2026-11-19/fix-rlvgivefolder` @ `98dabbdf2` (fork on Firestorm master, Feb 2026) | "Give to #RLV" from a script: the new subfolder keeps its short name and lands in the right place in #RLV (FIRE-35486, FIRE-35704). Applied cleanly on 7.2.5; `<PS>` markers added. | LGPL 2.1 (Firestorm/RLVa headers unchanged) | Source branch and commit hash | #8 | Not built, not tried |

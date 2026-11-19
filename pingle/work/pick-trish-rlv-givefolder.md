@@ -1,6 +1,6 @@
 Branch: pick/trish-rlv-givefolder
-Status: active
-Pull request: pending
+Status: done
+Pull request: #8
 Files:
 - indra/newview/llviewermessage.cpp
 - indra/newview/rlvinventory.*
