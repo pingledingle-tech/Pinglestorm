@@ -18,4 +18,4 @@ A pick is a change taken from someone else's fork of Firestorm (or of another vi
 
 | Date | Source (repo @ commit) | What | Licence | Credit | Pull request | Built and tried |
 |---|---|---|---|---|---|---|
-| | | | | | | |
+| 2026-11-19 | `snapshot/trish-2026-11-19/fix-showlocrlva` @ `b92a4d01e`, `2383794ff` (fork on a newer Firestorm, Oct 2026) | RLVa `@showloc`: the "Set Location" button in a profile pick is disabled and does nothing while the restriction is active. Applied cleanly on 7.2.5; `<PS>` markers added. | LGPL 2.1 (Firestorm headers unchanged) | Source branch and commit hashes | #9 | Not built, not tried |

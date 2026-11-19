@@ -1,6 +1,6 @@
 Branch: pick/trish-rlv-showloc-picks
-Status: active
-Pull request: pending
+Status: done
+Pull request: #9
 Files:
 - indra/newview/llpanelprofilepicks.*
 - pingle/PICKS.md
