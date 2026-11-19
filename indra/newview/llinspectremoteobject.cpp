@@ -38,6 +38,9 @@
 // [RLVa:KB] - Checked: 2010-04-22 (RLVa-1.2.2a)
 #include "rlvhandler.h"
 // [/RLVa:KB]
+// <PS> pick: FIRE-36682
+#include "rlvactions.h" // <FS:Trish/> FIRE-36682
+// </PS>
 
 //////////////////////////////////////////////////////////////////////////////
 // LLInspectRemoteObject
@@ -190,11 +193,23 @@ void LLInspectRemoteObject::update()
     getChild<LLUICtrl>("block_btn")->setEnabled(!mObjectID.isNull() && !LLMuteList::getInstance()->isMuted(mObjectID));
 
 // [RLVa:KB] - Checked: 2010-04-22 (RLVa-1.2.0f) | Added: RLVa-1.2.0f
-    if ( (rlv_handler_t::isEnabled()) && (RlvStrings::getString(RlvStringKeys::Hidden::Region) == mSLurl) )
+    // <PS> pick: FIRE-36682
+    //if ( (rlv_handler_t::isEnabled()) && (RlvStrings::getString(RlvStringKeys::Hidden::Region) == mSLurl) )
+    //{
+    //    getChild<LLUICtrl>("object_slurl")->setValue(mSLurl);
+    //    getChild<LLUICtrl>("map_btn")->setEnabled(false);
+    //}
+    // <FS:Trish> FIRE-36682 The SLurl is from when the chat arrives.
+    // A chat can arrive before a restriction is set (such as on login)
+    // active restriction should be checked here.
+    const std::string& hidden_region = RlvStrings::getString(RlvStringKeys::Hidden::Region);
+    if ( (rlv_handler_t::isEnabled()) && ((hidden_region == mSLurl) || ((!mSLurl.empty()) && (!RlvActions::canShowLocation()))) )
     {
-        getChild<LLUICtrl>("object_slurl")->setValue(mSLurl);
+        getChild<LLUICtrl>("object_slurl")->setValue(hidden_region);
         getChild<LLUICtrl>("map_btn")->setEnabled(false);
     }
+    // </FS:Trish>
+    // </PS>
 // [/RLVa:KB]
 }
 
