@@ -1,6 +1,6 @@
 Branch: pick/trish-rlv-fartouch-region
-Status: active
-Pull request: pending
+Status: done
+Pull request: #11
 Files:
 - indra/newview/lltoolselect.cpp
 - pingle/PICKS.md

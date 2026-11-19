@@ -18,4 +18,4 @@ A pick is a change taken from someone else's fork of Firestorm (or of another vi
 
 | Date | Source (repo @ commit) | What | Licence | Credit | Pull request | Built and tried |
 |---|---|---|---|---|---|---|
-| | | | | | | |
+| 2026-11-19 | `snapshot/trish-2026-11-19/fire-37061` @ `c3d918d23` (fork on a newer Firestorm, Oct 2026) | RLVa `@fartouch`: the distance check when selecting an object uses agent space for both positions, so objects across a region border are no longer wrongly out of reach (FIRE-37061). Applied cleanly on 7.2.5; `<PS>` markers added. | LGPL 2.1 (Firestorm headers unchanged) | Source branch and commit hash | #11 | Not built, not tried |
