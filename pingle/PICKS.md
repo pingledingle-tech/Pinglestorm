@@ -18,4 +18,4 @@ A pick is a change taken from someone else's fork of Firestorm (or of another vi
 
 | Date | Source (repo @ commit) | What | Licence | Credit | Pull request | Built and tried |
 |---|---|---|---|---|---|---|
-| | | | | | | |
+| 2026-11-19 | `snapshot/trish-2026-11-19/fire-37066` @ `06224c827` (fork on a newer Firestorm, Oct 2026) | RLVa in the joystick/3D-mouse flycam: flycam is blocked (menu item greyed) under `@setcam`/`@setcam_unlock` and is left when such a restriction appears; camera distance and field-of-view limits are kept while flying (FIRE-37066). Applied cleanly on 7.2.5; `<PS>` markers added. | LGPL 2.1 (Firestorm headers unchanged) | Source branch and commit hash | #13 | Not built, not tried |

@@ -1,6 +1,6 @@
 Branch: pick/trish-rlv-flycam
-Status: active
-Pull request: pending
+Status: done
+Pull request: #13
 Files:
 - indra/newview/llviewerjoystick.*
 - indra/newview/llviewermenu.cpp
