@@ -1,6 +1,6 @@
 Branch: docs/task-list
-Status: active
-Pull request: pending
+Status: done
+Pull request: #6
 Files:
 - pingle/TASKS.md
 
