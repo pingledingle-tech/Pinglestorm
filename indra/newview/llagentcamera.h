@@ -198,8 +198,15 @@ private:
     //--------------------------------------------------------------------
 public:
     bool            isfollowCamLocked();
+// <PS> pick 449ec3de9
+    void            notifyFollowCamParamsCleared();
+    void            resetFollowCamZoom();
+// </PS>
 private:
     LLFollowCam     mFollowCam;             // Ventrella
+// <PS> pick 449ec3de9
+    F64             mLastValidFollowCamParamsTime;
+// </PS>
 
     //--------------------------------------------------------------------
     // Sit

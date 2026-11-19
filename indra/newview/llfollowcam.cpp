@@ -28,6 +28,9 @@
 #include "llviewerprecompiledheaders.h"
 #include "llfollowcam.h"
 #include "llagent.h"
+// <PS> pick 449ec3de9
+#include "llviewercontrol.h"
+// </PS>
 
 #include "permissionstracker.h"
 
@@ -295,6 +298,9 @@ void LLFollowCam::update()
 
     LLVector3 simulated_pos_agent = gAgent.getPosAgentFromGlobal(mSimulatedPositionGlobal);
     LLVector3 vectorFromCameraToSubject = offsetSubjectPosition - simulated_pos_agent;
+// <PS> pick 449ec3de9
+    static LLCachedControl<bool> follow_subject_rotation(gSavedSettings, "FollowCamFollowSubjectRotation", false);
+// </PS>
     F32 distanceFromCameraToSubject = vectorFromCameraToSubject.magVec();
 
     LLVector3 whereFocusWantsToBe = mFocus;
@@ -345,6 +351,14 @@ void LLFollowCam::update()
         // I determine the horizontal vector from the camera to the subject
         //-------------------------------------------------------------------------
         LLVector3 horizontalVectorFromCameraToSubject = vectorFromCameraToSubject;
+        // <PS> pick 449ec3de9
+        if (follow_subject_rotation)
+        {
+            // Build the follow-camera offset in subject space so the subject's
+            // pitch and roll can be carried into the camera's world position.
+            horizontalVectorFromCameraToSubject *= ~mSubjectRotation;
+        }
+        // </PS>
         horizontalVectorFromCameraToSubject.mV[VZ] = 0.0f;
 
         //---------------------------------------------------------
@@ -385,6 +399,13 @@ void LLFollowCam::update()
                 -mPitchSin
             );
 
+        // <PS> pick 449ec3de9
+        if (follow_subject_rotation)
+        {
+            positionOffsetFromSubject *= mSubjectRotation;
+        }
+        // </PS>
+
         positionOffsetFromSubject *= mSimulatedDistance;
 
         //----------------------------------------------------------------------
@@ -417,11 +438,24 @@ void LLFollowCam::update()
         //--------------------------------------------------------------------
         // don't let the camera get farther than its official max distance
         //--------------------------------------------------------------------
-        if ( distanceFromCameraToSubject > mMaxCameraDistantFromSubject )
+        // <PS> pick 449ec3de9
+        // if ( distanceFromCameraToSubject > mMaxCameraDistantFromSubject )
+        // {
+        //     LLVector3 directionFromCameraToSubject = vectorFromCameraToSubject / distanceFromCameraToSubject;
+        //     simulated_pos_agent = offsetSubjectPosition - directionFromCameraToSubject * mMaxCameraDistantFromSubject;
+        // }
+        // <FS:Trish> Fix Followcam zoom being stuck at max distance while in motion
+        const F32 target_camera_distance = llmin(mSimulatedDistance, mMaxCameraDistantFromSubject);
+        const F32 updated_distance_from_camera_to_subject = (offsetSubjectPosition - simulated_pos_agent).magVec();
+        if ( updated_distance_from_camera_to_subject > target_camera_distance )
         {
-            LLVector3 directionFromCameraToSubject = vectorFromCameraToSubject / distanceFromCameraToSubject;
-            simulated_pos_agent = offsetSubjectPosition - directionFromCameraToSubject * mMaxCameraDistantFromSubject;
+            // Clamp on the scripted follow-cam offset so we preserve the active pitch instead of flattening to the
+            // current camera-to-subject vector while catching up.
+            simulated_pos_agent = offsetSubjectPosition -
+                (positionOffsetFromSubject * (target_camera_distance / mSimulatedDistance));
         }
+        // </FS:Trish>
+        // </PS>
 
         ////-------------------------------------------------------------------------------------------------
         //// The following method takes mSimulatedPositionGlobal and resets it so that it stays "behind" the subject,
@@ -565,6 +599,14 @@ void LLFollowCam::reset( const LLVector3 p, const LLVector3 f , const LLVector3 
     mUpVector   = u;
 }
 
+// <PS> pick 449ec3de9
+void LLFollowCam::resetZoom()
+{
+    mSimulatedDistance = mDistance;
+    mZoomedToMinimumDistance = false;
+}
+// </PS>
+
 //---------------------------------------------------------
 void LLFollowCam::setMaxCameraDistantFromSubject( F32 m )
 {
@@ -580,12 +622,22 @@ void LLFollowCam::setPitch( F32 p )
 
 void LLFollowCam::setDistance( F32 d )
 {
-    if (d != mDistance)
+    // <PS> pick 449ec3de9: clamp to limits and keep the user's zoom delta
+    // if (d != mDistance)
+    // {
+    //     LLFollowCamParams::setDistance(d);
+    //     mSimulatedDistance = d;
+    //     mZoomedToMinimumDistance = false;
+    // }
+    const F32 clamped_distance = llclamp(d, FOLLOW_CAM_MIN_DISTANCE, mMaxCameraDistantFromSubject);
+    if (clamped_distance != mDistance)
     {
-        LLFollowCamParams::setDistance(d);
-        mSimulatedDistance = d;
+        const F32 user_delta = mSimulatedDistance - mDistance;
+        LLFollowCamParams::setDistance(clamped_distance);
+        mSimulatedDistance = llclamp(mDistance + user_delta, FOLLOW_CAM_MIN_DISTANCE, mMaxCameraDistantFromSubject);
         mZoomedToMinimumDistance = false;
     }
+    // </PS>
 }
 
 void LLFollowCam::setPosition( const LLVector3& p )
