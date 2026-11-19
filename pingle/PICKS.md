@@ -18,4 +18,4 @@ A pick is a change taken from someone else's fork of Firestorm (or of another vi
 
 | Date | Source (repo @ commit) | What | Licence | Credit | Pull request | Built and tried |
 |---|---|---|---|---|---|---|
-| | | | | | | |
+| 2026-11-19 | `snapshot/trish-2026-11-19/trishstorm-develop` @ `449ec3de9` (Firestorm 7.3.0 beta fork) | Passed-on mouselook controls (llTakeControls pass_on) no longer block left-click, HUD touch and picking (setting `FSMouseLookPassonFix`, default on; its settings.xml entry taken from a later source commit), plus scripted follow-camera fixes (setting `FollowCamFollowSubjectRotation`, default off). No preferences checkboxes. Applied cleanly; `<PS>` markers added. | LGPL 2.1 (Firestorm headers unchanged) | Source branch and commit hash | #7 | Not built, not tried |

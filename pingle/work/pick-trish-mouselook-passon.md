@@ -1,5 +1,5 @@
 Branch: pick/trish-mouselook-passon
-Status: active
+Status: done
 Pull request: #7
 Files:
 - indra/newview/app_settings/settings.xml
