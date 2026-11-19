@@ -28,6 +28,12 @@
 #define LL_LLVIEWERJOYSTICK_H
 
 #include "stdtypes.h"
+// <PS> pick: FIRE-37066
+// [RLVa:Trish]
+#include "rlvdefines.h"
+#include <boost/signals2.hpp>
+// [/RLVa:Trish]
+// </PS>
 
 #if LIB_NDOF
 #if LL_DARWIN
@@ -82,6 +88,11 @@ public:
     bool getOverrideCamera() { return mOverrideCamera; }
     void setOverrideCamera(bool val);
     bool toggleFlycam();
+    // <PS> pick: FIRE-37066
+    // [RLVa:Trish]
+    static bool isFlycamAllowedByRlv();
+    // [/RLVa:Trish]
+    // </PS>
     void setSNDefaults();
     bool isDeviceUUIDSet();
     LLSD getDeviceUUID(); //unconverted, OS dependent value wrapped into LLSD, for comparison/search
@@ -100,6 +111,11 @@ protected:
     void agentJump();
     void resetDeltas(S32 axis[]);
     void loadDeviceIdFromSettings();
+    // <PS> pick: FIRE-37066
+    // [RLVa:Trish]
+    void onRlvBehaviourToggle(ERlvBehaviour behaviour, ERlvParamType type);
+    // [/RLVa:Trish]
+    // </PS>
 #if LIB_NDOF
     static NDOF_HotPlugResult HotPlugAddCallback(NDOF_Device *dev);
     static void HotPlugRemovalCallback(NDOF_Device *dev);
@@ -119,6 +135,9 @@ private:
     bool                    mCameraUpdated;
     bool                    mOverrideCamera;
     U32                     mJoystickRun;
+    // <PS> pick: FIRE-37066
+    boost::signals2::connection mRlvBehaviourConnection; // [RLVa:Trish]
+    // </PS>
 
     // Windows: _GUID as U8 binary map
     // MacOS: long as an U8 binary map
