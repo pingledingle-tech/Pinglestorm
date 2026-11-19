@@ -1,6 +1,6 @@
 Branch: pick/trish-mouselook-passon
 Status: active
-Pull request: pending
+Pull request: #7
 Files:
 - indra/newview/app_settings/settings.xml
 - indra/newview/llagent.cpp
