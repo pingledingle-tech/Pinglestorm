@@ -1,6 +1,6 @@
 Branch: pick/trish-rlv-showloc-login
-Status: active
-Pull request: pending
+Status: done
+Pull request: #10
 Files:
 - indra/newview/llinspectremoteobject.cpp
 - pingle/PICKS.md
