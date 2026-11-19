@@ -88,10 +88,13 @@ jobs:
                    llplugin/media_plugin_cef.dll fonts; do
             if [ -e "$f" ]; then echo "ok       $f"; else echo "MISSING  $f"; fail=1; fi
           done
-          # Open build: no FMOD, no KDU.
-          if find . -iname '*fmod*' -o -iname '*kdu*' | grep .; then
+          # Open build: no FMOD, no KDU library or program. (Skin pictures such
+          # as the FMOD logo in the credits are not libraries and are allowed.)
+          if find . -type f \( -iname '*.dll' -o -iname '*.exe' \) | grep -i -E 'fmod|kdu'; then
             echo "Non-free library found"; fail=1
           fi
+          echo "Top level, files and size per folder:"
+          for d in */; do echo "  $d $(find "$d" -type f | wc -l) files, $(du -sh "$d" | cut -f1)"; done
           echo "Files: $(find . -type f | wc -l)"
           echo "Size:  $(du -sh . | cut -f1)"
           exit $fail
