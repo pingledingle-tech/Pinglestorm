@@ -18,4 +18,4 @@ A pick is a change taken from someone else's fork of Firestorm (or of another vi
 
 | Date | Source (repo @ commit) | What | Licence | Credit | Pull request | Built and tried |
 |---|---|---|---|---|---|---|
-| | | | | | | |
+| 2026-11-19 | `snapshot/trish-2026-11-19/fire-37059` @ `31b186646`, `c3b01a9ef` (fork on a newer Firestorm, Oct 2026) | RLVa `@tplocal=n` without a distance now allows 1.5 m (was 256 m, now the maximum), and the distance is measured in 3D, so a teleport straight up is limited too (FIRE-37059). Applied cleanly on 7.2.5; `<PS>` markers added. | LGPL 2.1 (Firestorm/RLVa headers unchanged) | Source branch and commit hashes | #12 | Not built, not tried |

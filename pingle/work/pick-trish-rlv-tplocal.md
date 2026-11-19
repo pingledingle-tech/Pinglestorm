@@ -1,6 +1,6 @@
 Branch: pick/trish-rlv-tplocal
-Status: active
-Pull request: pending
+Status: done
+Pull request: #12
 Files:
 - indra/newview/rlvactions.cpp
 - indra/newview/rlvdefines.h
