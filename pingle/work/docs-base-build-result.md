@@ -1,6 +1,6 @@
 Branch: docs/base-build-result
-Status: active
-Pull request: pending
+Status: done
+Pull request: #3
 Files:
 - pingle/UPSTREAM.md
 

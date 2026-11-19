@@ -32,7 +32,8 @@ Later, as its own job, not now: fetch the new release branch, merge it into a br
 ## Building
 
 - **Windows, open build:** `.github/workflows/pingle-build-windows.yml`, started by hand from the Actions tab ("Run workflow") on `main`. It builds the untouched base with `ReleaseFS_open` (no FMOD, no KDU) on a GitHub-hosted `windows-2022` runner and keeps the result for 7 days as the artifact `pinglestorm-windows-base`.
-- **Not yet known:** whether it builds, how long it takes, and where the finished program ends up (the artifact paths are a first guess). The first run answers that; fix this section then.
+- **First run: built, not yet tried.** The run of "Pingle build Windows" on `main` (run id 44541790579, 19 Nov 2026) finished with conclusion success. It started 14:15:31 UTC and ended 15:02:48 UTC, about 47 minutes. It produced the artifact `pinglestorm-windows-base`, about 475 MB, kept 7 days (expires 26 Nov 2026). The program has not been started or tried on a Windows computer yet.
+- **Artifact layout, partly checked from the job log (the artifact was not downloaded):** the log shows `firestorm-bin.exe` was built in `build-vc170-64/newview/Release/`, and the workflow uploads everything below `build-*/newview/Release/` and `build-*/logs/` (525 files). So the executable is in the artifact under `newview/Release/`. Not checked: whether that folder holds a complete, runnable program (libraries, skins and other data files) or a packaged installer. That needs a look inside the artifact.
 - Firestorm's own build page (`doc/building_windows.md`) is the reference for building on your own computer.
 
 ## Files of ours that live in Firestorm's folders
