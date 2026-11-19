@@ -1,5 +1,5 @@
 Branch: ci/windows-package-build
-Status: active
+Status: done
 Pull request: #4
 Files:
 - .github/workflows/pingle-build-windows.yml
