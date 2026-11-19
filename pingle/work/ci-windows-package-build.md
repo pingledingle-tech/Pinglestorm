@@ -1,6 +1,6 @@
 Branch: ci/windows-package-build
 Status: active
-Pull request: pending
+Pull request: #4
 Files:
 - .github/workflows/pingle-build-windows.yml
 - pingle/UPSTREAM.md
