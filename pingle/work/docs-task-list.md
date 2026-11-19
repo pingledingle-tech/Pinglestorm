@@ -1,0 +1,9 @@
+Branch: docs/task-list
+Status: active
+Pull request: pending
+Files:
+- pingle/TASKS.md
+
+## What
+
+Adds the task list approved by the project owner as one new file, `pingle/TASKS.md`. Docs only. Nothing in the list is started.
