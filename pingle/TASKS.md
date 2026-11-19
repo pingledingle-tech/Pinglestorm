@@ -7,9 +7,9 @@ The source is a frozen copy of another fork, stored in this repository as branch
 
 ## Step 0
 
-- [ ] T01 Try the untouched Windows base build: the project owner downloads the build, starts it, logs in and walks around. Everything else waits for this. An open pull request packages the Windows build into a runnable program folder (branch `ci/windows-package-build`); it may be needed first.
+- [x] T01 Try the untouched Windows base build: the project owner downloads the build, starts it, logs in and walks around. Everything else waits for this. An open pull request packages the Windows build into a runnable program folder (branch `ci/windows-package-build`); it may be needed first.
   - Source: none (our own base build)
-  - Status: Not started. Not tried.
+  - Status: The project owner reported on 19 Nov 2026 that the Windows base build was tried and works. No further details recorded.
 
 
 ## Step 1: Mouselook and RLV (first priority)
