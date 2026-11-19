@@ -1,0 +1,33 @@
+name: Pingle privacy
+
+# Stops personal names and email addresses from entering our own commits.
+# Cherry-picked commits keep other people's emails, so they are rewritten to our noreply author
+# when they are picked (see pingle/PICKS.md and pingle/DECISIONS.md, open decision 1).
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  privacy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Tests for the privacy check
+        run: python3 pingle/tests/test_check_privacy.py
+      - name: No personal data in commits or added lines
+        if: github.event.pull_request.state == 'open'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: python3 pingle/tools/check_privacy.py "$BASE" "$HEAD"
+      - name: No personal data in the pull request title or description
+        if: ${{ !cancelled() }}
+        run: python3 pingle/tools/check_privacy.py --event "$GITHUB_EVENT_NAME" "$GITHUB_EVENT_PATH"
