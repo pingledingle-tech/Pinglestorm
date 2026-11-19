@@ -150,9 +150,11 @@ public:
 
     void addLocationChangedCallbacks();
 
+    // <PS> pick: RLVa showloc in picks
     //<FS:Trish> RLVa showloc
     void updateButtons();
     //</FS:Trish>
+    // </PS>
 
   protected:
 
@@ -268,6 +270,13 @@ protected:
 
     boost::signals2::connection mRegionCallbackConnection;
     boost::signals2::connection mParcelCallbackConnection;
+
+    // <PS> pick: RLVa showloc in picks
+    //<FS:Trish> RLVa showloc
+    boost::signals2::connection mRlvBehaviorCallbackConnection;
+    void updateRlvRestrictions(ERlvBehaviour behavior, ERlvParamType type);
+    //</FS:Trish>
+    // </PS>
 
     bool mLocationChanged;
     bool mNewPick;
