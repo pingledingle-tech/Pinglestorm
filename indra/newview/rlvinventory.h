@@ -145,7 +145,16 @@ private:
 class RlvGiveToRLVTaskOffer : public LLInventoryObserver, RlvGiveToRLVOffer
 {
 public:
-    RlvGiveToRLVTaskOffer(const LLUUID& idTransaction) : RlvGiveToRLVOffer(), m_idTransaction(idTransaction) {}
+// <PS> pick: give-to-#RLV folder fix
+//  RlvGiveToRLVTaskOffer(const LLUUID& idTransaction) : RlvGiveToRLVOffer(), m_idTransaction(idTransaction) {}
+    RlvGiveToRLVTaskOffer(const LLUUID& idTransaction, const std::string& expected_name)
+        : RlvGiveToRLVOffer(),
+          m_idTransaction(idTransaction),
+          m_strExpectedName(expected_name),
+          m_idExpectedParent(LLUUID::null),
+          m_strExpectedLeaf()
+    {}
+// </PS>
     void changed(U32 mask) override;
 protected:
     void done();
@@ -157,6 +166,11 @@ protected:
     typedef std::vector<LLUUID> folder_ref_t;
     folder_ref_t m_Folders;
     LLUUID       m_idTransaction;
+    // <PS> pick: give-to-#RLV folder fix
+    std::string  m_strExpectedName;
+    LLUUID       m_idExpectedParent;
+    std::string  m_strExpectedLeaf;
+    // </PS>
 };
 
 class RlvGiveToRLVAgentOffer : public LLInventoryFetchDescendentsObserver, RlvGiveToRLVOffer
