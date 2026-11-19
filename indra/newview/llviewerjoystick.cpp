@@ -47,6 +47,12 @@
 #include "llagentcamera.h"
 #include "llfocusmgr.h"
 #include "llmoveview.h"
+// <PS> pick: FIRE-37066
+#include "llvoavatarself.h"
+#include "rlvactions.h"
+#include "rlvcommon.h"
+#include "rlvhandler.h"
+// </PS>
 
 #if LL_WINDOWS && !LL_MESA_HEADLESS
 // Require DirectInput version 8
@@ -350,11 +356,26 @@ LLViewerJoystick::LLViewerJoystick()
     mPerfScale = 4000.f / (F32)gSysCPU.getMHz(); // hmm.  why?
 
     mLastDeviceUUID = LLSD::Integer(1);
+
+    // <PS> pick: FIRE-37066
+    // [RLVa:Trish]
+    mRlvBehaviourConnection = gRlvHandler.setBehaviourToggleCallback(boost::bind(&LLViewerJoystick::onRlvBehaviourToggle, this, _1, _2));
+    // [/RLVa:Trish]
+    // </PS>
 }
 
 // -----------------------------------------------------------------------------
 LLViewerJoystick::~LLViewerJoystick()
 {
+    // <PS> pick: FIRE-37066
+    // [RLVa:Trish]
+    if (mRlvBehaviourConnection.connected())
+    {
+        mRlvBehaviourConnection.disconnect();
+    }
+    // [/RLVa:Trish]
+    // </PS>
+
     if (mDriverState == JDS_INITIALIZED)
     {
         terminate();
@@ -1210,6 +1231,27 @@ void LLViewerJoystick::moveAvatar(bool reset)
 }
 
 // -----------------------------------------------------------------------------
+// <PS> pick: FIRE-37066
+// [RLVa:Trish] RLVa camera-related restrictions
+bool LLViewerJoystick::isFlycamAllowedByRlv()
+{
+    return !RlvActions::isRlvEnabled() ||
+        (!RlvActions::hasBehaviour(RLV_BHVR_SETCAM) && !RlvActions::hasBehaviour(RLV_BHVR_SETCAM_UNLOCK));
+}
+
+// Leave flycam as soon as new camera restrictions should kick the user out of flycam.
+void LLViewerJoystick::onRlvBehaviourToggle(ERlvBehaviour behaviour, ERlvParamType type)
+{
+    if ((RLV_BHVR_SETCAM == behaviour || RLV_BHVR_SETCAM_UNLOCK == behaviour) &&
+        mOverrideCamera && !isFlycamAllowedByRlv())
+    {
+        toggleFlycam();
+        setCameraNeedsUpdate(true);
+    }
+}
+// [/RLVa:Trish]
+// </PS>
+
 void LLViewerJoystick::moveFlycam(bool reset)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_INPUT;
@@ -1342,6 +1384,57 @@ void LLViewerJoystick::moveFlycam(bool reset)
 
     sFlycamPosition += LLVector3d(sDelta[VX], sDelta[VY], sDelta[VZ]) * sFlycamRotation;
 
+    // <PS> pick: FIRE-37066
+    // [RLVa:Trish] - Enforce the camera distance clamps while flycam is overriding the camera.
+    if (RlvActions::isRlvEnabled() && RlvActions::isCameraDistanceClamped())
+    {
+        F32 min_dist = 0.f;
+        F32 max_dist = F32_MAX;
+        F32 limit_min = 0.f;
+        F32 limit_max = F32_MAX;
+        bool clamped = false;
+        if (RlvActions::getCameraAvatarDistanceLimits(limit_min, limit_max))
+        {
+            min_dist = llmax(min_dist, limit_min);
+            max_dist = llmin(max_dist, limit_max);
+            clamped = true;
+        }
+        if (RlvActions::getCameraOriginDistanceLimits(limit_min, limit_max))
+        {
+            min_dist = llmax(min_dist, limit_min);
+            max_dist = llmin(max_dist, limit_max);
+            clamped = true;
+        }
+        min_dist = llmin(min_dist, max_dist);
+
+        if (clamped)
+        {
+            const LLVector3d avatar_cam_pos = gAgent.getPosGlobalFromAgent(
+                (isAgentAvatarValid() && gAgentAvatarp->mHeadp) ? gAgentAvatarp->mHeadp->getWorldPosition() : gAgent.getPositionAgent());
+
+            LLVector3d camera_offset = sFlycamPosition - avatar_cam_pos;
+            const F32 camera_distance = (F32)camera_offset.magVec();
+
+            if (camera_distance > max_dist)
+            {
+                sFlycamPosition = avatar_cam_pos + (max_dist / camera_distance) * camera_offset;
+            }
+            else if (camera_distance < min_dist)
+            {
+                if (camera_distance > F_APPROXIMATELY_ZERO)
+                {
+                    sFlycamPosition = avatar_cam_pos + (min_dist / camera_distance) * camera_offset;
+                }
+                else
+                {
+                    sFlycamPosition = avatar_cam_pos + LLVector3d(LLViewerCamera::getInstance()->getAtAxis()) * min_dist;
+                }
+            }
+        }
+    }
+    // [/RLVa:Trish]
+    // </PS>
+
     LLMatrix3 rot_mat(sDelta[3], sDelta[4], sDelta[5]);
     sFlycamRotation = LLQuaternion(rot_mat)*sFlycamRotation;
 
@@ -1372,6 +1465,17 @@ void LLViewerJoystick::moveFlycam(bool reset)
         sFlycamZoom += sDelta[6];
     }
 
+    // <PS> pick: FIRE-37066
+    // [RLVa:Trish] - @setcam_fovmin/@setcam_fovmax
+    F32 fov_min = 0.f;
+    F32 fov_max = 0.f;
+    if (RlvActions::isRlvEnabled() && RlvActions::getCameraFOVLimits(fov_min, fov_max))
+    {
+        sFlycamZoom = llclamp(sFlycamZoom, fov_min, fov_max);
+    }
+    // [/RLVa:Trish]
+    // </PS>
+
     LLMatrix3 mat(sFlycamRotation);
 
     LLViewerCamera::getInstance()->setView(sFlycamZoom);
@@ -1392,6 +1496,16 @@ bool LLViewerJoystick::toggleFlycam()
         LLPanelStandStopFlying::clearStandStopFlyingMode(LLPanelStandStopFlying::SSFM_FLYCAM);
         return false;
     }
+
+    // <PS> pick: FIRE-37066
+    // [RLVa:Trish]
+    if (!mOverrideCamera && !isFlycamAllowedByRlv())
+    {
+        RlvUtil::notifyBlockedGeneric();
+        return false;
+    }
+    // [/RLVa:Trish]
+    // </PS>
 
     if (!mOverrideCamera)
     {
