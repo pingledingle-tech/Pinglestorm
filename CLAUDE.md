@@ -25,9 +25,9 @@ All our own files live in `pingle/` (plus this file and `.github/*pingle*`), so 
 ## Licence and distribution
 
 - Firestorm's code is LGPL 2.1. Keep every licence header and notice. Never remove or rewrite another author's copyright line.
-- **FMOD** is allowed only in local builds on the project owner's own PC (the owner downloads the FMOD Studio SDK with their own FMOD account). FMOD is never committed to the repository, never used in CI, and builds made with FMOD are never shared or published.
+- **FMOD** is allowed in builds. The owner downloads the FMOD SDK with their own FMOD account. The SDK is never committed to the repository and never used in CI. FMOD builds may be shared, free of charge only (non-commercial: no monetisation, sponsorship or promotion), and must credit FMOD as the FMOD EULA requires (attribution, e.g. in the About window/credits).
 - **KDU stays forbidden everywhere** (not obtainable or licensable). Other non-free libraries stay forbidden.
-- CI and every shared build use the `_open` build configurations (`ReleaseFS_open`).
+- CI always uses the `_open` build configurations (`ReleaseFS_open`).
 - Before a pick: read the licence of the source fork. No licence, or a licence that is not LGPL-compatible: do not pick; tell the user.
 - The viewer is for personal use for now. Before it is given to anyone else, it needs its own name and branding (no Firestorm name or logo), only code from official release branches as the base, and a check against Linden Lab's Third-Party Viewer Policy. Ask the project owner first.
 
