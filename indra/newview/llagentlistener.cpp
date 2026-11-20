@@ -694,12 +694,26 @@ void LLAgentListener::setFollowCamParams(const LLSD& event) const
 
 void LLAgentListener::setFollowCamActive(LLSD const & event) const
 {
-    LLFollowCamMgr::getInstance()->setCameraActive(gAgentID, event["active"]);
+    // <PS> pick 449ec3de9
+    // LLFollowCamMgr::getInstance()->setCameraActive(gAgentID, event["active"]);
+    const bool active = event["active"].asBoolean();
+    LLFollowCamMgr::getInstance()->setCameraActive(gAgentID, active);
+    if (!active && !LLFollowCamMgr::getInstance()->getActiveFollowCamParams())
+    {
+        gAgentCamera.notifyFollowCamParamsCleared();
+    }
+    // </PS>
 }
 
 void LLAgentListener::removeFollowCamParams(LLSD const & event) const
 {
     LLFollowCamMgr::getInstance()->removeFollowCamParams(gAgentID);
+    // <PS> pick 449ec3de9
+    if (!LLFollowCamMgr::getInstance()->getActiveFollowCamParams())
+    {
+        gAgentCamera.notifyFollowCamParamsCleared();
+    }
+    // </PS>
 }
 
 LLViewerInventoryItem* get_anim_item(LLEventAPI::Response &response, const LLSD &event_data)

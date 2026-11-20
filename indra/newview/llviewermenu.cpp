@@ -5983,6 +5983,13 @@ void reset_view_final(bool proceed)
         return;
     }
 
+// <PS> pick 449ec3de9
+    if (gAgentCamera.getCameraMode() == CAMERA_MODE_FOLLOW)
+    {
+        gAgentCamera.resetFollowCamZoom();
+    }
+// </PS>
+
     gAgentCamera.resetView(true, true);
     gAgentCamera.setLookAt(LOOKAT_TARGET_CLEAR);
 }
