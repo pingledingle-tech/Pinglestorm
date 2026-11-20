@@ -2555,6 +2555,10 @@ void LLAvatarActions::derenderMultiple(const uuid_vec_t& agent_ids, bool permane
 void LLAvatarActions::onDerenderAvatarNameLookup(const LLUUID& agent_id, const LLAvatarName& av_name, bool permanent)
 {
     FSAssetBlacklist::getInstance()->addNewItemToBlacklist(agent_id, av_name.getUserName(), "", LLAssetType::AT_PERSON, FSAssetBlacklist::eBlacklistFlag::NONE, permanent, permanent);
+    // <PS> pick: FIRE-31254: track like derendering from the nametag does, otherwise "Clear temporary" and
+    // clearing on teleport fail
+    gObjectList.addDerenderedItem(agent_id, permanent);
+    // </PS>
 
     LLViewerObject* av_obj = gObjectList.findObject(agent_id);
     if (av_obj)
