@@ -145,6 +145,13 @@ All on `snapshot/trish-2026-11-19/trishstorm-develop`. The first step of each ta
   - Status: Not started. Not checked whether it applies on Firestorm 7.2.5. Not built, not tried.
 
 
+## Ideas to explore (not yet scheduled)
+
+- [ ] T31 Ground sit: look into how the viewer plays the built-in ground-sit animation (sitting directly on the ground, no object to sit on), and whether an AO (Animation Overrider) can already override it the same way it overrides a normal object sit, or whether ground sit needs its own viewer-side hook. Investigation only; no branch, pick or build started yet.
+  - Source: none yet (our own investigation; check whether Trish's or i-doll's forks touch this)
+  - Status: Not started.
+
+
 ## Dependencies
 
 - T01 comes before every other task.
