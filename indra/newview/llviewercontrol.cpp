@@ -952,7 +952,10 @@ void applyGlobalOnlineStatusChange(const LLSD& notification, const LLSD& respons
         {
             // Lets have a warning log message instead of having a crash. EXT-4947.
             LL_WARNS() << "Trying to modify rights for non-friend avatar. Skipped." << LL_ENDL;
-            return;
+            // <PS> pick: FIRE-37092: skip this friend and go on with the rest
+            //return;
+            continue;
+            // </PS>
         }
 
         S32 cur_rights = relation->getRightsGrantedTo();
@@ -969,7 +972,10 @@ void applyGlobalOnlineStatusChange(const LLSD& notification, const LLSD& respons
         LLAvatarPropertiesProcessor::getInstance()->sendFriendRights(buddy_id, new_rights);
     }
 
-    LLNotificationsUtil::add("GlobalOnlineStatusToggle");
+    // <PS> pick: FIRE-37092
+    //LLNotificationsUtil::add("GlobalOnlineStatusToggle");
+    LLNotificationsUtil::add("GlobalOnlineStatusToggleInfo");
+    // </PS>
 }
 // </FS:Ansariel>
 

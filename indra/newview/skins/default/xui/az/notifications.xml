@@ -5166,10 +5166,12 @@ hansı nişandan istifadə etmək istərdiniz?
 	<notification name="PickLimitReached">
 		Seçilmişin yaradılması uğursuz oldu, çünki seçilmişlərin artıq maksimum sayı yaradılıb.
 	</notification>
-	<notification name="GlobalOnlineStatusToggle">
+	<!-- <PS> pick: FIRE-37092: renamed from GlobalOnlineStatusToggle (a setting with the same name exists) -->
+	<notification name="GlobalOnlineStatusToggleInfo">
 		Server yükü olduğu səbəbindən onlayn statusun görünməsinin kütləvi şəkildə dəyişdirilməsinin effektiv olması bir müddət çəkə bilər. Zəhmət olmasa, səbr edin.
 		<usetemplate ignoretext="Mənə bildirin ki, onlayn statusun görünməsinə keçid bir qədər vaxt apara bilər" name="okignore" yestext="Bəli"/>
 	</notification>
+	<!-- </PS> -->
 	<notification name="RenderVolumeLODFactorWarning">
 		XƏBƏRDARLIQ: Dətallaşdırma səviyyəsi (LOD) yüksək olaraq təyin edilib
 
