@@ -550,6 +550,9 @@ private:
     //--------------------------------------------------------------------
 public:
     bool            leftButtonGrabbed() const;
+// <PS> pick 449ec3de9
+    bool            leftButtonBlocked() const;
+// </PS>
     bool            rotateGrabbed() const;
     bool            forwardGrabbed() const;
     bool            backwardGrabbed() const;

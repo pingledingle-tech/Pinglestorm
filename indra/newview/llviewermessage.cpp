@@ -2254,8 +2254,43 @@ bool LLOfferInfo::inventory_task_offer_callback(const LLSD& notification, const 
                     if (idRlvRoot.notNull())
                         mFolderID = idRlvRoot;
 
+                    // <PS> pick: give-to-#RLV folder fix
+                    std::string expected_name;
+                    std::string::size_type idxToken = mDesc.find("'  ( http://");
+                    if (std::string::npos != idxToken && idxToken > 1)
+                    {
+                        expected_name = mDesc.substr(1, idxToken - 1);
+                    }
+                    else
+                    {
+                        std::string::size_type start = mDesc.find('\'');
+                        std::string::size_type end = mDesc.find_last_of('\'');
+                        if ((std::string::npos != start) && (std::string::npos != end) && (end > start + 1))
+                        {
+                            expected_name = mDesc.substr(start + 1, end - start - 1);
+                        }
+                    }
+                    if (expected_name.find(RLV_PUTINV_PREFIX) != 0)
+                    {
+                        expected_name.clear();
+                    }
+
+                    if (expected_name.empty())
+                    {
+                        std::string::size_type idxPrefix = mDesc.find(RLV_PUTINV_PREFIX);
+                        if (std::string::npos != idxPrefix)
+                        {
+                            std::string::size_type idxEnd = mDesc.find('\'', idxPrefix);
+                            if (std::string::npos == idxEnd)
+                                idxEnd = mDesc.length();
+                            expected_name = mDesc.substr(idxPrefix, idxEnd - idxPrefix);
+                        }
+                    }
+
                     // "accepted_in_rlv" is sent from RlvGiveToRLVTaskOffer *after* we have the folder
-                    RlvGiveToRLVTaskOffer* pOfferObserver = new RlvGiveToRLVTaskOffer(mTransactionID);
+                    //RlvGiveToRLVTaskOffer* pOfferObserver = new RlvGiveToRLVTaskOffer(mTransactionID);
+                    RlvGiveToRLVTaskOffer* pOfferObserver = new RlvGiveToRLVTaskOffer(mTransactionID, expected_name);
+                    // </PS>
                     gInventory.addObserver(pOfferObserver);
                 }
                 else
@@ -5521,6 +5556,12 @@ void process_clear_follow_cam_properties(LLMessageSystem *mesgsys, void **user_d
     mesgsys->getUUIDFast(_PREHASH_ObjectData, _PREHASH_ObjectID, source_id);
 
     LLFollowCamMgr::getInstance()->removeFollowCamParams(source_id);
+    // <PS> pick 449ec3de9
+    if (!LLFollowCamMgr::getInstance()->getActiveFollowCamParams())
+    {
+        gAgentCamera.notifyFollowCamParamsCleared();
+    }
+    // </PS>
 }
 
 void process_set_follow_cam_properties(LLMessageSystem *mesgsys, void **user_data)
@@ -5590,6 +5631,12 @@ void process_set_follow_cam_properties(LLMessageSystem *mesgsys, void **user_dat
         case FOLLOWCAM_ACTIVE:
             //if 1, set using followcam,.
             LLFollowCamMgr::getInstance()->setCameraActive(source_id, value != 0.f);
+            // <PS> pick 449ec3de9
+            if (value == 0.f && !LLFollowCamMgr::getInstance()->getActiveFollowCamParams())
+            {
+                gAgentCamera.notifyFollowCamParamsCleared();
+            }
+            // </PS>
             break;
         case FOLLOWCAM_POSITION_X:
             settingPosition = true;
