@@ -517,6 +517,7 @@ void FSAvatarAlignBase::onClickFaceNearestAvatar()
 void FSAvatarAlignBase::repositionOnToggle(LLFloater* next, const LLRect& old_rect)
 {
     LLRect view  = gFloaterView->getRect();
+    // <PS> pick: avatar alignment floater remembers its position (FIRE-36531)
     LLRect rect  = next->getRect();
     bool on_left = (old_rect.getCenterX() < view.getCenterX());
     bool on_bot  = (old_rect.getCenterY() < view.getCenterY());
@@ -525,6 +526,7 @@ void FSAvatarAlignBase::repositionOnToggle(LLFloater* next, const LLRect& old_re
                         rect.getWidth(), rect.getHeight());
     // FIRE-36531: Use setShape to store the new position for next login.
     next->setShape(rect, true);
+    // </PS>
 }
 
 // ============================================================
