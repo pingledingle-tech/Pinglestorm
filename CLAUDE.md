@@ -25,7 +25,9 @@ All our own files live in `pingle/` (plus this file and `.github/*pingle*`), so 
 ## Licence and distribution
 
 - Firestorm's code is LGPL 2.1. Keep every licence header and notice. Never remove or rewrite another author's copyright line.
-- Never commit or publish FMOD, KDU or any other non-free library, and never build with them in CI. Use the `_open` build configurations (`ReleaseFS_open`).
+- **FMOD** is allowed in builds. The owner downloads the FMOD SDK with their own FMOD account. The SDK is never committed to the repository and never used in CI. FMOD builds may be shared, free of charge only (non-commercial: no monetisation, sponsorship or promotion), and must credit FMOD as the FMOD EULA requires (attribution, e.g. in the About window/credits).
+- **KDU stays forbidden everywhere** (not obtainable or licensable). Other non-free libraries stay forbidden.
+- CI always uses the `_open` build configurations (`ReleaseFS_open`).
 - Before a pick: read the licence of the source fork. No licence, or a licence that is not LGPL-compatible: do not pick; tell the user.
 - The viewer is for personal use for now. Before it is given to anyone else, it needs its own name and branding (no Firestorm name or logo), only code from official release branches as the base, and a check against Linden Lab's Third-Party Viewer Policy. Ask the project owner first.
 
@@ -40,7 +42,7 @@ All our own files live in `pingle/` (plus this file and `.github/*pingle*`), so 
 2. Bring your branch up to date with `main`. Run `python3 pingle/tools/work.py check`.
 3. Mark the pull request ready: `gh pr ready <number>`, or where GraphQL is blocked `gh api -X POST repos/pingledingle-tech/Pinglestorm/pulls/<number>/ccr/ready_for_review`.
 4. Wait until all required checks are green.
-5. Merge with squash: `gh api -X PUT repos/pingledingle-tech/Pinglestorm/pulls/<number>/merge -f merge_method=squash`. There is **no standing permission** yet: every merge needs a yes from the project owner in this session. When a change shows on screen, he tests the Windows build first, one plain step at a time.
+5. Merge with squash: `gh api -X PUT repos/pingledingle-tech/Pinglestorm/pulls/<number>/merge -f merge_method=squash`. There is **no standing permission** yet: every merge needs a yes from the project owner in this session. Windows testing is not a precondition for merging; it happens whenever the project owner gets to it, one plain step at a time, and a merged change that has not been tried yet is still reported as "not built" or "not tried" until he confirms it.
 6. After the merge: `git switch main && git pull && git branch -D <branch>`.
 
 ## Commits
