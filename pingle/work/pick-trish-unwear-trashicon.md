@@ -1,6 +1,6 @@
 Branch: pick/trish-unwear-trashicon
-Status: active
-Pull request: TBD
+Status: done
+Pull request: #19
 Files:
 - indra/newview/llpanelmaininventory.cpp
 - pingle/PICKS.md
