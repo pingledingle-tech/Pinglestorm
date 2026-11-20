@@ -42,7 +42,7 @@ All our own files live in `pingle/` (plus this file and `.github/*pingle*`), so 
 2. Bring your branch up to date with `main`. Run `python3 pingle/tools/work.py check`.
 3. Mark the pull request ready: `gh pr ready <number>`, or where GraphQL is blocked `gh api -X POST repos/pingledingle-tech/Pinglestorm/pulls/<number>/ccr/ready_for_review`.
 4. Wait until all required checks are green.
-5. Merge with squash: `gh api -X PUT repos/pingledingle-tech/Pinglestorm/pulls/<number>/merge -f merge_method=squash`. There is **no standing permission** yet: every merge needs a yes from the project owner in this session. When a change shows on screen, he tests the Windows build first, one plain step at a time.
+5. Merge with squash: `gh api -X PUT repos/pingledingle-tech/Pinglestorm/pulls/<number>/merge -f merge_method=squash`. There is **no standing permission** yet: every merge needs a yes from the project owner in this session. Windows testing is not a precondition for merging; it happens whenever the project owner gets to it, one plain step at a time, and a merged change that has not been tried yet is still reported as "not built" or "not tried" until he confirms it.
 6. After the merge: `git switch main && git pull && git branch -D <branch>`.
 
 ## Commits
