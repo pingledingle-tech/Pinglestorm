@@ -1759,6 +1759,21 @@ Save Changes?
      yestext="Save"/>
   </notification>
 
+  <!-- <PS> pick: FIRE-32374: say which script the prompt is about -->
+  <notification
+   icon="alertmodal.tga"
+   name="SaveScriptChanges"
+   type="alertmodal">
+Save changes to [NAME]?
+    <tag>confirm</tag>
+    <usetemplate
+     canceltext="Cancel"
+     name="yesnocancelbuttons"
+     notext="Don&apos;t Save"
+     yestext="Save"/>
+  </notification>
+  <!-- </PS> -->
+
   <notification
    icon="alertmodal.tga"
    name="DeleteNotecard"

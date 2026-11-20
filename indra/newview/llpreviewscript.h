@@ -398,6 +398,9 @@ public:
     void experienceChanged();
 
     void setObjectName(std::string name) { mObjectName = name; }
+    // <PS> pick: FIRE-32374
+    std::string getObjectName() const { return mObjectName; }
+    // </PS>
 
 private:
     virtual bool canClose();
