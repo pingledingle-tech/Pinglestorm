@@ -1,6 +1,6 @@
 Branch: pick/trish-omnifilter-empty-names
-Status: active
-Pull request: TBD
+Status: done
+Pull request: #18
 Files:
 - indra/newview/omnifilter.cpp
 - pingle/PICKS.md
