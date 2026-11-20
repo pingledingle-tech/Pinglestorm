@@ -30,6 +30,7 @@ The TCP-socket-with-token-file approach is also exactly what Aurora already ship
 - A random 32-byte key is written to a token file when the feature is turned on (readable only by the user's own account), removed when it is turned off.
 - Mutual HMAC-SHA256 challenge/response: the key itself is never sent over the connection, only proof that both sides can read the token file. The viewer also proves itself to the client, so the client does not hand poses to an impostor on the port.
 - One client at a time. Off by default.
+- **Stays off across restarts, not just at first install.** The listener is activated from a setting, but that setting resets to off every time Pinglestorm starts — turning it on only lasts for the current session. The project owner has to turn it on again each time the viewer is restarted; it never comes back on by itself. This matches how PinglyMotion already treats its own end of the same kind of link ("the link is off every time PinglyMotion starts", from PinglyMotion's `docs/AURORA_LINK.md`), and keeps the listener passive by default rather than something that, once turned on, is easy to forget is still running.
 - Same protocol PinglyMotion and the Blender add-on already speak with Aurora (documented, open) — so they work without client-side changes (beyond the one small token-folder change described below).
 
 ## Two separate pipelines
@@ -51,7 +52,7 @@ The TCP-socket-with-token-file approach is also exactly what Aurora already ship
 
 - A new, small module under `pingle/` (own files, not Firestorm's), owning: the listener socket, the token file, the HMAC handshake, and the queue that hands poses to the `LLMotion` above.
 - Threading: socket accept/read loop on a worker thread (standard C++ `std::thread`, or the viewer's own thread-pool primitives if that fits better — to be decided when this step starts); only the decoded pose is pushed onto a lock-protected queue the main loop drains once per frame.
-- A `settings.xml` entry (default off) turns the listener on or off; a small Build-menu item and a status indicator (same idea as Aurora's) toggle it and show the connection state, reusing the existing menu/floater patterns Firestorm already has for similar toggles.
+- A `settings.xml` entry (default off) turns the listener on or off; a small Build-menu item and a status indicator (same idea as Aurora's) toggle it and show the connection state, reusing the existing menu/floater patterns Firestorm already has for similar toggles. Unlike a normal preference, this one must not persist as "on": it needs to be forced back to off on every startup (e.g. reset in code right after settings load, not just given a default value that a saved `settings.xml` could still override), so the listener is only ever running because the project owner turned it on in the current session.
 - Message framing and JSON: needs checking what the codebase already links (likely `LLSD` for the viewer's own wire formats, or a JSON library already vendored for something else) rather than adding a new JSON dependency; to be confirmed when step 2 below starts.
 
 ## Not yet verified
