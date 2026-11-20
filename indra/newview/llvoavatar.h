@@ -1236,6 +1236,10 @@ private:
     bool            mIsSitting;
     // position backup in case of missing data
     LLVector3       mLastRootPos;
+// <PS> pick 449ec3de9
+    // Follow-cam sources belonging to the current seat, retained for missing-parent recovery.
+    std::vector<LLUUID> mSitFollowCamSources;
+// </PS>
 
 /**                    Hierarchy
  **                                                                            **

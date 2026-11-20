@@ -146,8 +146,13 @@ bool LLToolGrabBase::handleMouseDown(S32 x, S32 y, MASK mask)
 
     LLTool::handleMouseDown(x, y, mask);
 
+    // <PS> pick 449ec3de9: only fully taken controls block (FSMouseLookPassonFix)
     // leftButtonGrabbed() checks if controls are reserved by scripts, but does not take masks into account
-    if (!gAgent.leftButtonGrabbed() || ((mask & DEFAULT_GRAB_MASK) != 0 && !gAgentCamera.cameraMouselook()))
+    // if (!gAgent.leftButtonGrabbed() || ((mask & DEFAULT_GRAB_MASK) != 0 && !gAgentCamera.cameraMouselook()))
+    // Only fully taken controls block the viewer's pick path. Passed-on
+    // controls still need to reach scripts and should not block ALT-clicking.
+    if (!gAgent.leftButtonBlocked() || ((mask & DEFAULT_GRAB_MASK) != 0 && !gAgentCamera.cameraMouselook()))
+    // </PS>
     {
         // can grab transparent objects (how touch event propagates, scripters rely on this)
         gViewerWindow->pickAsync(x, y, mask, pickCallback, /*bool pick_transparent*/ true);

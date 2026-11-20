@@ -7,4 +7,4 @@ Files:
 
 ## What
 
-A manual-only GitHub Actions workflow that builds the untouched Firestorm 7.2.5 base for Windows with the open configuration (`ReleaseFS_open`: no FMOD, no KDU), to learn whether and how long it builds. Nothing else changes.
+A manual-only GitHub Actions workflow that builds the untouched Firestorm 7.2.5 base for Windows with the open configuration (`ReleaseFS_open`: no FMOD, no KDU; CI never uses FMOD), to learn whether and how long it builds. Nothing else changes.
