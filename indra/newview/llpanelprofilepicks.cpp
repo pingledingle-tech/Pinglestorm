@@ -578,6 +578,9 @@ LLPanelProfilePick::LLPanelProfilePick()
  , mIsEditing(false)
  , mRegionCallbackConnection()
  , mParcelCallbackConnection()
+// <PS> pick: RLVa showloc in picks
+ , mRlvBehaviorCallbackConnection() //<FS:Trish/> RLVa showloc
+// </PS>
 // <AS:Chanayane> Preview button
  , mPreview(false)
 // </AS:Chanayane>
@@ -607,6 +610,14 @@ LLPanelProfilePick::~LLPanelProfilePick()
     {
         mParcelCallbackConnection.disconnect();
     }
+    // <PS> pick: RLVa showloc in picks
+    //<FS:Trish> RLVa showloc
+    if (mRlvBehaviorCallbackConnection.connected())
+    {
+        mRlvBehaviorCallbackConnection.disconnect();
+    }
+    //</FS:Trish>
+    // </PS>
 }
 
 void LLPanelProfilePick::setAvatarId(const LLUUID& avatar_id)
@@ -669,7 +680,12 @@ void LLPanelProfilePick::setAvatarId(const LLUUID& avatar_id)
     {
         mPickName->setEnabled(true);
         mPickDescription->setEnabled(true);
-        mSetCurrentLocationButton->setVisible(true);
+        // <PS> pick: RLVa showloc in picks
+        //<FS:Trish> RLVa showloc
+        //mSetCurrentLocationButton->setVisible(true);
+        updateButtons();
+        //</FS:Trish>
+        // </PS>
     }
     else
     {
@@ -701,6 +717,12 @@ bool LLPanelProfilePick::postBuild()
     mCreateButton->setCommitCallback(boost::bind(&LLPanelProfilePick::onClickSave, this));
     mCancelButton->setCommitCallback(boost::bind(&LLPanelProfilePick::onClickCancel, this));
     mSetCurrentLocationButton->setCommitCallback(boost::bind(&LLPanelProfilePick::onClickSetLocation, this));
+
+    // <PS> pick: RLVa showloc in picks
+    //<FS:Trish> RLVa showloc
+    mRlvBehaviorCallbackConnection = gRlvHandler.setBehaviourCallback(boost::bind(&LLPanelProfilePick::updateRlvRestrictions, this, _1, _2));
+    //</FS:Trish>
+    // </PS>
 
     // <AS:Chanayane> Preview button
     mPreviewButton->setCommitCallback(boost::bind(&LLPanelProfilePick::onClickPreview, this));
@@ -908,6 +930,15 @@ bool LLPanelProfilePick::isDirty() const
 
 void LLPanelProfilePick::onClickSetLocation()
 {
+    // <PS> pick: RLVa showloc in picks
+    //<FS:Trish> RLVa showloc
+    if (gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC))
+    {
+        return;
+    }
+    //</FS:Trish>
+    // </PS>
+
     // Save location for later use.
     setPosGlobal(gAgent.getPositionGlobal());
 
@@ -1022,6 +1053,24 @@ void LLPanelProfilePick::addLocationChangedCallbacks()
     mRegionCallbackConnection = gAgent.addRegionChangedCallback([this]() { onClickSetLocation(); });
     mParcelCallbackConnection = gAgent.addParcelChangedCallback([this]() { onClickSetLocation(); });
 }
+
+// <PS> pick: RLVa showloc in picks
+//<FS:Trish> RLVa showloc
+void LLPanelProfilePick::updateButtons()
+{
+    mSetCurrentLocationButton->setVisible(getSelfProfile());
+    mSetCurrentLocationButton->setEnabled(getSelfProfile() && !gRlvHandler.hasBehaviour(RLV_BHVR_SHOWLOC));
+}
+
+void LLPanelProfilePick::updateRlvRestrictions(ERlvBehaviour behavior, ERlvParamType type)
+{
+    if (behavior == RLV_BHVR_SHOWLOC)
+    {
+        updateButtons();
+    }
+}
+//</FS:Trish> RLVa showloc
+// </PS>
 
 void LLPanelProfilePick::setParcelID(const LLUUID& parcel_id)
 {
