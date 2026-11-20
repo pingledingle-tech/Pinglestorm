@@ -1,5 +1,5 @@
 Branch: pick/trish-bomdesyncs
-Status: not done - conflict needs design judgement
+Status: done
 Pull request: #16 (draft, left open for the project owner to decide)
 Files:
 - indra/newview/llappearancemgr.cpp
