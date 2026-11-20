@@ -2788,7 +2788,43 @@ bool LLPanelMainInventory::isActionEnabled(const LLSD& userdata)
     // </FS:Ansariel>
     if (command_name == "delete")
     {
-        return getActivePanel()->isSelectionRemovable();
+        // <PS> pick: trash icon matches the right-click menu
+        // <FS:Trish> Allow deleting items while worn.
+        LLInventoryPanel* panel = getActivePanel();
+        if (!panel)
+        {
+            return false;
+        }
+
+        LLFolderView* root = panel->getRootFolder();
+        if (!root)
+        {
+            return false;
+        }
+
+        std::set<LLFolderViewItem*> selection_set = root->getSelectionList();
+        if (selection_set.empty())
+        {
+            return false;
+        }
+
+        for (LLFolderViewItem* item : selection_set)
+        {
+            const LLFolderViewModelItem* listener = item ? item->getViewModelItem() : nullptr;
+            if (!listener)
+            {
+                return false;
+            }
+
+            if (!listener->isItemRemovable(false) || listener->isItemInTrash())
+            {
+                return false;
+            }
+        }
+
+        return true;
+        // </FS:Trish>
+        // </PS>
     }
     if (command_name == "save_texture")
     {
@@ -3179,7 +3215,12 @@ bool LLPanelMainInventory::handleDragAndDropToTrash(bool drop, EDragAndDropType 
     const bool is_enabled = isActionEnabled("delete");
     if (is_enabled) *accept = ACCEPT_YES_MULTI;
 
-    if (is_enabled && drop)
+    // <PS> pick: trash icon matches the right-click menu
+    // <FS:Trish> Allow deleting items while worn.
+    //if (is_enabled && drop)
+    if (is_enabled && drop && LLToolDragAndDrop::getInstance()->getCargoIndex() == 0)
+    // </FS:Trish>
+    // </PS>
     {
         onClipboardAction("delete");
     }
