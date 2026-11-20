@@ -7,9 +7,9 @@ The source is a frozen copy of another fork, stored in this repository as branch
 
 ## Step 0
 
-- [x] T01 Try the untouched Windows base build: the project owner downloads the build, starts it, logs in and walks around. Everything else waits for this. An open pull request packages the Windows build into a runnable program folder (branch `ci/windows-package-build`); it may be needed first.
+- [ ] T01 Try the packaged Windows base build: the project owner downloads the build, starts it, logs in and walks around. Everything else waits for this.
   - Source: none (our own base build)
-  - Status: The project owner reported on 19 Nov 2026 that the Windows base build was tried and works. No further details recorded.
+  - Status: Not done yet. The first (unpackaged) build was tried on 19 Nov 2026 and failed to start ("Missing Files" — `app_settings/settings_files.xml` was missing because the build ran without Firestorm's `--package` step). The fix is packaged and merged (`pingle/UPSTREAM.md`), but the packaged build has not been downloaded or tried on Windows yet.
 
 
 ## Step 1: Mouselook and RLV (first priority)
