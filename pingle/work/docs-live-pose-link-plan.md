@@ -1,6 +1,6 @@
 Branch: docs/live-pose-link-plan
 Status: done
-Pull request: pending
+Pull request: #20
 Files:
 - pingle/LIVEPOSE_PLAN.md
 - pingle/work/docs-live-pose-link-plan.md
