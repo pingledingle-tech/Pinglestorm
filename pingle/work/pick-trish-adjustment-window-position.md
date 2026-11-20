@@ -1,6 +1,6 @@
 Branch: pick/trish-adjustment-window-position
-Status: active
-Pull request: TBD
+Status: done
+Pull request: #17
 Files:
 - indra/newview/fsfloateravataralign.cpp
 - pingle/PICKS.md
