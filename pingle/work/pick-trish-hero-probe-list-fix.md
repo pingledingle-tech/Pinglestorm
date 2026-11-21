@@ -1,6 +1,6 @@
 Branch: pick/trish-hero-probe-list-fix
-Status: active
-Pull request: pending
+Status: done
+Pull request: #26
 Files:
 - indra/newview/llheroprobemanager.cpp
 - pingle/PICKS.md
