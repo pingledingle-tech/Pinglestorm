@@ -1,6 +1,6 @@
 Branch: docs/t01-base-build-works
 Status: done
-Pull request: pending
+Pull request: #21
 Files:
 - pingle/TASKS.md
 - pingle/UPSTREAM.md
