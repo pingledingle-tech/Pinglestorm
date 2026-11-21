@@ -138,6 +138,11 @@ void LLHeroProbeManager::update()
         float last_distance = 99999.f;
         float camera_center_distance = 99999.f;
         mNearestHero = nullptr;
+        // <PS> pick: hero probe list d66f6a826
+        // <FS:Trish> Unregistering erases from mHeroVOList, so collect the stale entries and drop them after the loop
+        std::vector<LLPointer<LLVOVolume>> stale_vos;
+        // </FS:Trish>
+        // </PS>
         for (auto vo : mHeroVOList)
         {
             if (vo && !vo->isDead() && vo->mDrawable.notNull() && vo->isReflectionProbe() && vo->getReflectionProbeIsBox())
@@ -179,10 +184,24 @@ void LLHeroProbeManager::update()
             }
             else
             {
-                unregisterViewerObject(vo);
+                // <PS> pick: hero probe list d66f6a826
+                // <FS:Trish>
+                //unregisterViewerObject(vo);
+                stale_vos.push_back(vo);
+                // </FS:Trish>
+                // </PS>
             }
         }
 
+        // <PS> pick: hero probe list d66f6a826
+        // <FS:Trish>
+        for (auto& vo : stale_vos)
+        {
+            unregisterViewerObject(vo);
+        }
+        // </FS:Trish>
+
+        // </PS>
         // Don't even try to do anything if we didn't find a single mirror present.
         if (!probe_present)
             return;
