@@ -1,6 +1,6 @@
 Branch: pick/trish-supersampling
-Status: active
-Pull request: pending
+Status: done
+Pull request: #23
 Files:
 - indra/newview/pipeline.cpp
 - pingle/PICKS.md
