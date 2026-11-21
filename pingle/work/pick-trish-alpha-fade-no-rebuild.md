@@ -1,6 +1,6 @@
 Branch: pick/trish-alpha-fade-no-rebuild
-Status: active
-Pull request: pending
+Status: done
+Pull request: #31
 Files:
 - indra/newview/llvovolume.cpp
 - indra/newview/llviewerregion.cpp
