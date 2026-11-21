@@ -1,6 +1,6 @@
 Branch: pick/trish-animation-data-lookup
-Status: active
-Pull request: pending
+Status: done
+Pull request: #28
 Files:
 - indra/llcharacter/llcharacter.cpp
 - indra/llcharacter/llcharacter.h
