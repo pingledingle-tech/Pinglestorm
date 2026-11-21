@@ -1,6 +1,6 @@
 Branch: ci/trish-snapshot-build
 Status: active
-Pull request: pending
+Pull request: #33
 Files:
 - .github/workflows/pingle-build-windows.yml
 - pingle/TASKS.md
@@ -13,4 +13,4 @@ Task T22: build the snapshot branch `snapshot/trish-2026-11-19/trishstorm-develo
 ## Build
 
 - Source: `snapshot/trish-2026-11-19/trishstorm-develop` @ `2ccd07a22994b91f3181cde4f4537cc5f21c574b`
-- Run: not started yet
+- Run: 44904792966 (started 21 Nov 2026, 12:36 UTC), running

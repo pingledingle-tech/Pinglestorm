@@ -107,7 +107,7 @@ All on `snapshot/trish-2026-11-19/trishstorm-develop`. The first step of each ta
 
 - [ ] T22 Build the snapshot branch untouched (open configuration, pinned to one commit) so the project owner can try graphics, frame rate and stability on their own PC. Nothing goes into `main`.
   - Source: `snapshot/trish-2026-11-19/trishstorm-develop` @ `2ccd07a22994b91f3181cde4f4537cc5f21c574b` (built as it is, not on Firestorm 7.2.5)
-  - Status: Started (job `ci/trish-snapshot-build`). Build not started yet. Not tried.
+  - Status: Started (job `ci/trish-snapshot-build`). Build run 44904792966 started 21 Nov 2026, running. Not tried.
 
 - [ ] T23 Decide the route after T22. (A) Move the base to Firestorm 7.3.0 when it is official and take the whole stack from there in its own branch (recommended: fewest conflicts, the stack is built on that base). (B) An experiment branch on 7.2.5 now. (C) Leave the stack. The project owner decides.
   - Source: none (decision)
