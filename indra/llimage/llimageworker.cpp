@@ -186,9 +186,25 @@ bool ImageRequest::processRequest()
             {
                 mFormattedImage->setDiscardLevel(mDiscardLevel);
             }
-            mDecodedImageRaw = new LLImageRaw(mFormattedImage->getWidth(),
-                                              mFormattedImage->getHeight(),
-                                              mFormattedImage->getComponents());
+            // <PS> pick: decode buffer size 2dc81fb26
+            // <FS:Trish> Allocate at the size being decoded. The J2C decoders resize the buffer to the
+            // reduced size anyway, so the full size allocation was freed right away (64MB for a 4096
+            // RGBA texture decoded at discard 3, to hold 1MB).
+            //mDecodedImageRaw = new LLImageRaw(mFormattedImage->getWidth(),
+            //                                  mFormattedImage->getHeight(),
+            //                                  mFormattedImage->getComponents());
+            S32 width = mFormattedImage->getWidth();
+            S32 height = mFormattedImage->getHeight();
+            const S32 discard = mFormattedImage->getDiscardLevel();
+            if (mFormattedImage->getCodec() == IMG_CODEC_J2C && discard > 0)
+            {
+                const S32 shift = llmin(discard, 15);
+                width = llmax(1, (width + (1 << shift) - 1) >> shift);
+                height = llmax(1, (height + (1 << shift) - 1) >> shift);
+            }
+            mDecodedImageRaw = new LLImageRaw(width, height, mFormattedImage->getComponents());
+            // </FS:Trish>
+            // </PS>
         }
 
         // <FS:ND> Probably out of memory crash
