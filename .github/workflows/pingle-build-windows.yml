@@ -6,6 +6,14 @@ name: Pingle build Windows
 # Open configuration only (ReleaseFS_open): no FMOD, no KDU, no secrets.
 on:
   workflow_dispatch:
+    # Optional: build other source code than the branch the run is started
+    # on, e.g. a snapshot branch pinned to one full commit hash. The workflow
+    # steps always come from the branch the run is started on.
+    inputs:
+      source_ref:
+        description: "Source to build: full commit hash, branch or tag (empty = the branch the run is started on)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -21,7 +29,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
+          ref: ${{ inputs.source_ref }}
           persist-credentials: false
+      - name: Show the source commit being built
+        shell: bash
+        env:
+          SOURCE_REF: ${{ inputs.source_ref }}
+        run: |
+          echo "Requested source: ${SOURCE_REF:-(the branch the run is started on)}"
+          echo "Building commit:  $(git rev-parse HEAD)"
+          echo "Building commit: \`$(git rev-parse HEAD)\` (requested: \`${SOURCE_REF:-run branch}\`)" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/checkout@v7
         with:
           repository: FirestormViewer/fs-build-variables

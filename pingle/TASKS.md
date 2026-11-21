@@ -106,8 +106,8 @@ All on `snapshot/trish-2026-11-19/trishstorm-develop`. The first step of each ta
 ## Step 4: The large graphics and performance stack
 
 - [ ] T22 Build the snapshot branch untouched (open configuration, pinned to one commit) so the project owner can try graphics, frame rate and stability on their own PC. Nothing goes into `main`.
-  - Source: `snapshot/trish-2026-11-19/trishstorm-develop`
-  - Status: Not started. Not checked whether it applies on Firestorm 7.2.5. Not built, not tried.
+  - Source: `snapshot/trish-2026-11-19/trishstorm-develop` @ `2ccd07a22994b91f3181cde4f4537cc5f21c574b` (built as it is, not on Firestorm 7.2.5)
+  - Status: Started (job `ci/trish-snapshot-build`). Built: run 44904792966 (21 Nov 2026) succeeded, artifact `pinglestorm-windows-base` kept until 28 Nov 2026. Not tried. Note: it uses the same settings folder as an installed Firestorm (`%APPDATA%\Firestorm_x64`); take a copy first.
 
 - [ ] T23 Decide the route after T22. (A) Move the base to Firestorm 7.3.0 when it is official and take the whole stack from there in its own branch (recommended: fewest conflicts, the stack is built on that base). (B) An experiment branch on 7.2.5 now. (C) Leave the stack. The project owner decides.
   - Source: none (decision)
