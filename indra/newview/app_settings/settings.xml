@@ -10835,6 +10835,19 @@ Change of this parameter will affect the layout of buttons in notification toast
     <integer>0</integer>
   </map>
 
+    <!-- <PS> pick cb5dd1c57 (PBR opaque without transparency); our own switch, off by default -->
+    <key>PSRenderPBRBlendAsOpaque</key>
+    <map>
+      <key>Comment</key>
+      <string>Draw PBR materials with alpha mode BLEND or MASK as opaque when they have no real transparency (base alpha 1 and no alpha channel in the base colour texture). Saves alpha sorting and blending. Off: as in Firestorm.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <!-- </PS> -->
     <key>RenderAnisotropic</key>
     <map>
       <key>Comment</key>
