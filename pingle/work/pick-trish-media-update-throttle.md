@@ -1,6 +1,6 @@
 Branch: pick/trish-media-update-throttle
-Status: active
-Pull request: pending
+Status: done
+Pull request: #29
 Files:
 - indra/newview/llviewermedia.cpp
 - pingle/PICKS.md
