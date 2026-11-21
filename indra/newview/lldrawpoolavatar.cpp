@@ -394,6 +394,20 @@ void LLDrawPoolAvatar::renderShadow(S32 pass)
         return;
     }
 
+    // <PS> pick: alpha blend shadows 8039997a4
+    // Optionally skip the costlier avatar shadow passes (alpha blend is the most
+    // expensive and least visually important; alpha mask next). Default 2 = full.
+    static LLCachedControl<S32> avatar_shadow_detail(gSavedSettings, "RenderAvatarShadowDetail", 2);
+    if (pass == SHADOW_PASS_AVATAR_ALPHA_BLEND && avatar_shadow_detail() < 2)
+    {
+        return;
+    }
+    if (pass == SHADOW_PASS_AVATAR_ALPHA_MASK && avatar_shadow_detail() < 1)
+    {
+        return;
+    }
+
+    // </PS>
     LLDrawPoolAvatar::sShadowPass = pass;
 
     if (pass == SHADOW_PASS_AVATAR_OPAQUE)
