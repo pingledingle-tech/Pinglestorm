@@ -7,9 +7,9 @@ The source is a frozen copy of another fork, stored in this repository as branch
 
 ## Step 0
 
-- [ ] T01 Try the packaged Windows base build: the project owner downloads the build, starts it, logs in and walks around. Everything else waits for this.
+- [x] T01 Try the packaged Windows base build: the project owner downloads the build, starts it, logs in and walks around. Everything else waits for this.
   - Source: none (our own base build)
-  - Status: Not done yet. The first (unpackaged) build was tried on 19 Nov 2026 and failed to start ("Missing Files" — `app_settings/settings_files.xml` was missing because the build ran without Firestorm's `--package` step). The fix is packaged and merged (`pingle/UPSTREAM.md`), but the packaged build has not been downloaded or tried on Windows yet.
+  - Status: Done 21 Nov 2026. The first (unpackaged) build failed to start on 19 Nov ("Missing Files", no `--package` step). The packaged build (run 44580296192) was downloaded and tried on Windows by the project owner, who reported "it works" (his words; no further detail given).
 
 
 ## Step 1: Mouselook and RLV (first priority)
