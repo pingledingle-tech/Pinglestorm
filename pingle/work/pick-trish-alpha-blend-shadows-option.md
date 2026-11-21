@@ -1,6 +1,6 @@
 Branch: pick/trish-alpha-blend-shadows-option
-Status: active
-Pull request: pending
+Status: done
+Pull request: #24
 Files:
 - indra/newview/app_settings/settings.xml
 - indra/newview/app_settings/settings_text.xml
