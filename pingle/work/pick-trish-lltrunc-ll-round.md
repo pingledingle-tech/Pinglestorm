@@ -1,6 +1,6 @@
 Branch: pick/trish-lltrunc-ll-round
-Status: active
-Pull request: pending
+Status: done
+Pull request: #32
 Files:
 - indra/llmath/llmath.h
 - pingle/PICKS.md
