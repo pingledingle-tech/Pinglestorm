@@ -10890,6 +10890,19 @@ Change of this parameter will affect the layout of buttons in notification toast
       <key>Value</key>
       <integer>0</integer>
     </map>
+  <!-- <PS> pick: alpha blend shadows 8039997a4 -->
+  <key>RenderAvatarShadowDetail</key>
+    <map>
+      <key>Comment</key>
+      <string>Which avatar passes cast shadows. 0 = opaque only, 1 = opaque plus alpha mask, 2 = full including alpha blend.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>2</integer>
+    </map>
+  <!-- </PS> -->
     <key>RenderCanUseGLTFPBROpaqueShaders</key>
     <map>
         <key>Comment</key>
@@ -11710,6 +11723,22 @@ Change of this parameter will affect the layout of buttons in notification toast
     <integer>0</integer>
   </map>
 
+  <!-- <PS> pick: alpha blend shadows 8039997a4; default changed to 1 (on) so transparent objects keep casting shadows as before -->
+  <key>RenderAlphaBlendShadows</key>
+  <map>
+    <key>Comment</key>
+    <string>Render alpha-blended objects into shadow maps. Turn off to save time: animated transparent effects (rain, smoke, mist) are expensive shadow casters.</string>
+    <key>Persist</key>
+    <integer>1</integer>
+    <key>Type</key>
+    <string>Boolean</string>
+    <key>Value</key>
+    <integer>1</integer>
+    <key>Backup</key>
+    <integer>0</integer>
+  </map>
+
+  <!-- </PS> -->
   <key>RenderMinimumLODTriangleCount</key>
   <map>
     <key>Comment</key>
