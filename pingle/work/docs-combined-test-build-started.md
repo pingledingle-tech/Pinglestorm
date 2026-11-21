@@ -1,6 +1,6 @@
 Branch: docs/combined-test-build-started
 Status: done
-Pull request: pending
+Pull request: #22
 Files:
 - pingle/PICKS.md
 - pingle/work/docs-combined-test-build-started.md
