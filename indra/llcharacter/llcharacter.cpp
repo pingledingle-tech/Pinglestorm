@@ -237,26 +237,75 @@ void LLCharacter::dumpCharacter( LLJoint* joint )
 //-----------------------------------------------------------------------------
 // setAnimationData()
 //-----------------------------------------------------------------------------
-void LLCharacter::setAnimationData(std::string name, void *data)
+// <PS> pick: animation data lookup 16e0be776
+// <FS:Trish> Look up by string_view, only allocate a key when inserting
+//void LLCharacter::setAnimationData(std::string name, void *data)
+//{
+//    mAnimationData[name] = data;
+//}
+void LLCharacter::setAnimationData(std::string_view name, void *data)
+// </PS>
 {
-    mAnimationData[name] = data;
+    // <PS> pick: animation data lookup 16e0be776
+    animation_data_map_t::iterator it = mAnimationData.find(name);
+    if (it != mAnimationData.end())
+    {
+        it->second = data;
+    }
+    else
+    {
+        mAnimationData.emplace(std::string(name), data);
+    }
+    // </PS>
 }
+// <PS> pick: animation data lookup 16e0be776
+// </FS:Trish>
+// </PS>
 
 //-----------------------------------------------------------------------------
 // getAnimationData()
 //-----------------------------------------------------------------------------
-void* LLCharacter::getAnimationData(std::string name)
+// <PS> pick: animation data lookup 16e0be776
+// <FS:Trish> Look up by string_view
+//void* LLCharacter::getAnimationData(std::string name)
+//{
+//    return get_if_there(mAnimationData, name, (void*)NULL);
+//}
+void* LLCharacter::getAnimationData(std::string_view name)
+// </PS>
 {
-    return get_if_there(mAnimationData, name, (void*)NULL);
+    // <PS> pick: animation data lookup 16e0be776
+    animation_data_map_t::const_iterator it = mAnimationData.find(name);
+    return it != mAnimationData.end() ? it->second : NULL;
+    // </PS>
 }
+// <PS> pick: animation data lookup 16e0be776
+// </FS:Trish>
+// </PS>
 
 //-----------------------------------------------------------------------------
 // removeAnimationData()
 //-----------------------------------------------------------------------------
-void LLCharacter::removeAnimationData(std::string name)
+// <PS> pick: animation data lookup 16e0be776
+// <FS:Trish> Look up by string_view
+//void LLCharacter::removeAnimationData(std::string name)
+//{
+//    mAnimationData.erase(name);
+//}
+void LLCharacter::removeAnimationData(std::string_view name)
+// </PS>
 {
-    mAnimationData.erase(name);
+    // <PS> pick: animation data lookup 16e0be776
+    animation_data_map_t::iterator it = mAnimationData.find(name);
+    if (it != mAnimationData.end())
+    {
+        mAnimationData.erase(it);
+    }
+    // </PS>
 }
+// <PS> pick: animation data lookup 16e0be776
+// </FS:Trish>
+// </PS>
 
 //-----------------------------------------------------------------------------
 // setVisualParamWeight()

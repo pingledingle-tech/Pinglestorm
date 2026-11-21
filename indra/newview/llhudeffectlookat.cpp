@@ -840,7 +840,12 @@ void LLHUDEffectLookAt::update()
             LLMotion* head_motion = ((LLVOAvatar*)(LLViewerObject*)mSourceObject)->findMotion(ANIM_AGENT_HEAD_ROT);
             if (disable_look_at())
             {
-                if (head_motion)
+                // <PS> pick: animation data lookup 16e0be776
+                // <FS:Trish> Only stop it once, stopMotion() on a stopped motion does nothing
+                //if (head_motion)
+                if (head_motion && !head_motion->isStopped())
+                // </FS:Trish>
+                // </PS>
                 {
                     ((LLVOAvatar*)(LLViewerObject*)mSourceObject)->stopMotion(ANIM_AGENT_HEAD_ROT);
                 }
