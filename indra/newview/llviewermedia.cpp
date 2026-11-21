@@ -680,21 +680,63 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
     // removing it for now.
     //createSpareBrowserMediaSource();
 
-    mAnyMediaShowing = false;
-    mAnyMediaPlaying = false;
+    // <PS> pick: media update throttle 50ab2f54e
+    // <FS:Trish> Reset below, only on frames that run the priority pass
+    //mAnyMediaShowing = false;
+    //mAnyMediaPlaying = false;
+    // </FS:Trish>
+    // </PS>
 
     impl_list::iterator iter = sViewerMediaImplList.begin();
     impl_list::iterator end = sViewerMediaImplList.end();
 
+    // <PS> pick: media update throttle 50ab2f54e
+    // <FS:Trish> Interest, sort and priority run at about 4 Hz, or at once when the
+    // impl set or any impl's visibility, focus, load or play state changes.
+    // The signature is an order-independent sum, so the sort itself does not trigger a pass.
+    static LLCachedControl<bool> inworld_media_enabled(gSavedSettings, "AudioStreamingMedia", true);
+    static LLCachedControl<bool> inworld_audio_enabled(gSavedSettings, "AudioStreamingMusic", true);
+    static LLFrameTimer priority_timer;
+    static U64 last_signature = 0;
+    U64 signature = 0;
+    // </FS:Trish>
+
+    // </PS>
     {
         LL_PROFILE_ZONE_NAMED_CATEGORY_MEDIA("media update interest"); //LL_RECORD_BLOCK_TIME(FTM_MEDIA_UPDATE_INTEREST);
         for(; iter != end;)
         {
             LLViewerMediaImpl* pimpl = *iter++;
             pimpl->update();
-            pimpl->calculateInterest();
+            // <PS> pick: media update throttle 50ab2f54e
+            // <FS:Trish> Interest is calculated in the throttled pass below
+            //pimpl->calculateInterest();
+            U64 flags = (pimpl->getVisible() ? 1 : 0) | (pimpl->hasFocus() ? 2 : 0) | (pimpl->getUsedInUI() ? 4 : 0)
+                | (pimpl->hasMedia() ? 8 : 0) | (pimpl->isMediaPlaying() ? 16 : 0) | (pimpl->mNeedsMuteCheck ? 32 : 0);
+            U64 h = ((U64)(uintptr_t)pimpl ^ flags) * 0x9E3779B97F4A7C15ULL;
+            signature += h ^ (h >> 29);
+            // </FS:Trish>
         }
     }
+
+    // <FS:Trish> Decide whether to run the interest, sort and priority pass this frame
+    signature += (U64)sViewerMediaImplList.size() * 0xC2B2AE3D27D4EB4FULL;
+    signature ^= (gViewerWindow->getActive() ? 1ULL : 0) | (gFocusMgr.getAppHasFocus() ? 2ULL : 0)
+        | (inworld_media_enabled() ? 4ULL : 0) | (inworld_audio_enabled() ? 8ULL : 0);
+    const bool priority_pass = (signature != last_signature) || priority_timer.hasExpired();
+    if (priority_pass)
+    {
+        last_signature = signature;
+        priority_timer.resetWithExpiry(0.25f);
+        for (iter = sViewerMediaImplList.begin(); iter != sViewerMediaImplList.end(); ++iter)
+        {
+            (*iter)->calculateInterest();
+            // </PS>
+        }
+    }
+    // <PS> pick: media update throttle 50ab2f54e
+    // </FS:Trish>
+    // </PS>
 
     // Let the spare media source actually launch
     if(mSpareBrowserMediaSource)
@@ -703,6 +745,17 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
         mSpareBrowserMediaSource->idle();
     }
 
+    // <PS> pick: media update throttle 50ab2f54e
+    // <FS:Trish> Keep the previous priorities and flags until the next pass
+    if (!priority_pass)
+    {
+        return;
+    }
+    mAnyMediaShowing = false;
+    mAnyMediaPlaying = false;
+    // </FS:Trish>
+
+    // </PS>
     {
         LL_PROFILE_ZONE_NAMED_CATEGORY_MEDIA("media sort"); //LL_RECORD_BLOCK_TIME(FTM_MEDIA_SORT);
         // Sort the static instance list using our interest criteria
@@ -720,8 +773,12 @@ void LLViewerMedia::updateMedia(void *dummy_arg)
 
     std::vector<LLViewerMediaImpl*> proximity_order;
 
-    static LLCachedControl<bool> inworld_media_enabled(gSavedSettings, "AudioStreamingMedia", true);
-    static LLCachedControl<bool> inworld_audio_enabled(gSavedSettings, "AudioStreamingMusic", true);
+    // <PS> pick: media update throttle 50ab2f54e
+    // <FS:Trish> Moved above
+    //static LLCachedControl<bool> inworld_media_enabled(gSavedSettings, "AudioStreamingMedia", true);
+    //static LLCachedControl<bool> inworld_audio_enabled(gSavedSettings, "AudioStreamingMusic", true);
+    // </FS:Trish>
+    // </PS>
     static LLCachedControl<U32> max_normal(gSavedSettings, "PluginInstancesNormal", 2);
     static LLCachedControl<U32> max_low(gSavedSettings, "PluginInstancesLow", 4);
     static LLCachedControl<F32> max_cpu(gSavedSettings, "PluginInstancesCPULimit", 0.9f); // <FS:minerjr> add missing f for float
