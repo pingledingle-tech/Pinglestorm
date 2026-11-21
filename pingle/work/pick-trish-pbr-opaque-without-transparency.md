@@ -1,6 +1,6 @@
 Branch: pick/trish-pbr-opaque-without-transparency
-Status: active
-Pull request: pending
+Status: done
+Pull request: #25
 Files:
 - indra/newview/llvovolume.cpp
 - indra/newview/pipeline.cpp
