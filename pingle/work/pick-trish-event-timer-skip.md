@@ -1,6 +1,6 @@
 Branch: pick/trish-event-timer-skip
-Status: active
-Pull request: pending
+Status: done
+Pull request: #30
 Files:
 - indra/llcommon/lleventtimer.cpp
 - pingle/PICKS.md
