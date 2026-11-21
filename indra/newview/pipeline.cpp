@@ -78,6 +78,9 @@
 #include "lltool.h"
 #include "lltoolmgr.h"
 #include "llviewercamera.h"
+// <PS> pick: PBR opaque without transparency cb5dd1c57
+#include "llfetchedgltfmaterial.h"
+// </PS>
 #include "llviewermediafocus.h"
 #include "llviewertexturelist.h"
 #include "llviewerobject.h"
@@ -1961,6 +1964,49 @@ LLDrawPool* LLPipeline::getPoolFromTE(const LLTextureEntry* te, LLViewerTexture*
 }
 
 //static
+// <PS> pick: PBR opaque without transparency cb5dd1c57
+static bool gltf_blend_has_transparency(const LLGLTFMaterial* mat)
+{
+    if (!mat || (mat->mAlphaMode != LLGLTFMaterial::ALPHA_MODE_BLEND &&
+        mat->mAlphaMode != LLGLTFMaterial::ALPHA_MODE_MASK))
+    {
+        return false;
+    }
+
+    // PS: adapted, off by default. With PSRenderPBRBlendAsOpaque off, only BLEND materials go to the
+    // alpha pool here, as before this pick.
+    static LLCachedControl<bool> ps_blend_as_opaque(gSavedSettings, "PSRenderPBRBlendAsOpaque", false);
+    if (!ps_blend_as_opaque)
+    {
+        return mat->mAlphaMode == LLGLTFMaterial::ALPHA_MODE_BLEND;
+    }
+
+    if (mat->mAlphaMode == LLGLTFMaterial::ALPHA_MODE_BLEND)
+    {
+        if (mat->mBaseColor.mV[3] < 0.999f)
+        {
+            return true;
+        }
+    }
+    else if (mat->mAlphaMode == LLGLTFMaterial::ALPHA_MODE_MASK)
+    {
+        if (mat->mBaseColor.mV[3] + 0.0001f < mat->mAlphaCutoff)
+        {
+            return true;
+        }
+    }
+
+    const LLFetchedGLTFMaterial* fetched = dynamic_cast<const LLFetchedGLTFMaterial*>(mat);
+    if (fetched && fetched->mBaseColorTexture.notNull())
+    {
+        const S32 comps = fetched->mBaseColorTexture->getComponents();
+        return (comps == 4 || comps == 2);
+    }
+
+    return mat->mTextureId[LLGLTFMaterial::GLTF_TEXTURE_INFO_BASE_COLOR].notNull();
+}
+
+// </PS>
 U32 LLPipeline::getPoolTypeFromTE(const LLTextureEntry* te, LLViewerTexture* imagep)
 {
     if (!te || !imagep)
@@ -1995,7 +2041,9 @@ U32 LLPipeline::getPoolTypeFromTE(const LLTextureEntry* te, LLViewerTexture* ima
         }
     }
 
-    if (alpha || (gltf_mat && gltf_mat->mAlphaMode == LLGLTFMaterial::ALPHA_MODE_BLEND))
+    // <PS> pick: PBR opaque without transparency cb5dd1c57
+    if (alpha || gltf_blend_has_transparency(gltf_mat))
+    // </PS>
     {
         return LLDrawPool::POOL_ALPHA;
     }
