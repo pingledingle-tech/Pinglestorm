@@ -189,6 +189,17 @@ void LLMotionController::deleteAllMotions()
 //-----------------------------------------------------------------------------
 void LLMotionController::purgeExcessMotions()
 {
+    // <PS> pick: animation data lookup 16e0be776
+    // <FS:Trish> Every loaded motion is on the active list and nothing is deprecated,
+    // so nothing can be purged. Skip clearing the blenders and walking the loaded motions.
+    if (mDeprecatedMotions.empty() && mLoadedMotions.size() <= mActiveMotions.size())
+    {
+        mLastCountAfterPurge = static_cast<U32>(mLoadedMotions.size());
+        return;
+    }
+    // </FS:Trish>
+
+    // </PS>
     if (mLoadedMotions.size() > MAX_MOTION_INSTANCES)
     {
         // clean up deprecated motions

@@ -31,6 +31,9 @@
 // Header Files
 //-----------------------------------------------------------------------------
 #include <string>
+// <PS> pick: animation data lookup 16e0be776
+#include <string_view> // <FS:Trish/>
+// </PS>
 
 #include "lljoint.h"
 #include "llmotioncontroller.h"
@@ -183,11 +186,24 @@ public:
 
     virtual S32 getCollisionVolumeID(std::string &name) { return -1; }
 
-    void setAnimationData(std::string name, void *data);
+    // <PS> pick: animation data lookup 16e0be776
+    // <FS:Trish> Take string_view, called every frame with literal keys
+    //void setAnimationData(std::string name, void *data);
+    //
+    //void *getAnimationData(std::string name);
+    //
+    //void removeAnimationData(std::string name);
+    void setAnimationData(std::string_view name, void *data);
+    // </PS>
 
-    void *getAnimationData(std::string name);
+    // <PS> pick: animation data lookup 16e0be776
+    void *getAnimationData(std::string_view name);
+    // </PS>
 
-    void removeAnimationData(std::string name);
+    // <PS> pick: animation data lookup 16e0be776
+    void removeAnimationData(std::string_view name);
+    // </FS:Trish>
+    // </PS>
 
     void addVisualParam(LLVisualParam *param);
     void addSharedVisualParam(LLVisualParam *param);
@@ -293,7 +309,12 @@ public:
 protected:
     LLMotionController  mMotionController;
 
-    typedef std::map<std::string, void *> animation_data_map_t;
+    // <PS> pick: animation data lookup 16e0be776
+    // <FS:Trish> Transparent comparator so lookups don't build a std::string
+    //typedef std::map<std::string, void *> animation_data_map_t;
+    typedef std::map<std::string, void *, std::less<>> animation_data_map_t;
+    // </FS:Trish>
+    // </PS>
     animation_data_map_t mAnimationData;
 
     F32                 mPreferredPelvisHeight;
