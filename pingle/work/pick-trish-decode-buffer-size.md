@@ -1,6 +1,6 @@
 Branch: pick/trish-decode-buffer-size
-Status: active
-Pull request: pending
+Status: done
+Pull request: #27
 Files:
 - indra/llimage/llimageworker.cpp
 - pingle/PICKS.md
