@@ -252,6 +252,7 @@
               user_resize="false"
               top="0"
               bottom="-1">
+              <!-- <PS> chat_editor: right="-1" changed to right="0" (nearby chat bar styling pick) </PS> -->
               <chat_editor
                enabled_control="FSNearbyChatbar"
                layout="topleft"
@@ -268,7 +269,7 @@
                top="1"
                bottom="-2"
                left="4"
-               right="-1"
+               right="0"
                wrap="true" />
             </layout_panel>
             <layout_panel
