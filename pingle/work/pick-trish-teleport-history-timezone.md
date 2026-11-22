@@ -1,6 +1,6 @@
 Branch: pick/trish-teleport-history-timezone
-Status: active
-Pull request: pending
+Status: done
+Pull request: #41
 Files:
 - indra/newview/app_settings/settings.xml
 - indra/newview/llpanelteleporthistory.cpp
