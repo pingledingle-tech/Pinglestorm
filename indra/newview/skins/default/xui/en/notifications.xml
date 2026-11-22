@@ -1759,6 +1759,7 @@ Save Changes?
      yestext="Save"/>
   </notification>
 
+  <!-- <PS> -->
   <!-- <FS:Trish> FIRE-32374: Say which script the prompt is about -->
   <notification
    icon="alertmodal.tga"
@@ -1773,6 +1774,7 @@ Save changes to [NAME]?
      yestext="Save"/>
   </notification>
   <!-- </FS:Trish> -->
+  <!-- </PS> -->
 
   <notification
    icon="alertmodal.tga"

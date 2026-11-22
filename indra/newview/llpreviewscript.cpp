@@ -1382,6 +1382,7 @@ bool LLScriptEdCore::canClose()
         {
             mSaveDialogShown = true;
             // Bring up view-modal dialog: Save changes? Yes, No, Cancel
+            // <PS>
             // <FS:Trish> FIRE-32374: make it more obvious which floater is asking to be closed
             // several editors can be asked to close at once
             //LLNotificationsUtil::add("SaveChanges", LLSD(), LLSD(), boost::bind(&LLScriptEdCore::handleSaveChangesDialog, this, _1, _2));
@@ -1401,6 +1402,7 @@ bool LLScriptEdCore::canClose()
             args["NAME"] = name;
             LLNotificationsUtil::add("SaveScriptChanges", args, LLSD(), boost::bind(&LLScriptEdCore::handleSaveChangesDialog, this, _1, _2));
             // </FS:Trish>
+            // </PS>
         }
         return false;
     }
