@@ -62,7 +62,11 @@ FSNearbyChatControl::FSNearbyChatControl(const FSNearbyChatControl::Params& p) :
     setPassDelete(true);
     mBGVisible = false;
     setFont(LLViewerChat::getChatFont());
+
     enableSingleLineMode(true);
+    mVPad = 0;
+    mVAlign = LLFontGL::VCENTER;
+    mTextVAlign = LLFontGL::VCENTER;
 
     setShowChatMentionPicker(!RlvActions::isRlvEnabled() || RlvActions::canShowName(RlvActions::SNC_DEFAULT));
     mRlvBehaviorCallbackConnection = gRlvHandler.setBehaviourToggleCallback(
