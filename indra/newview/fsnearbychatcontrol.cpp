@@ -37,7 +37,9 @@
 #include "llemojihelper.h"
 #include "llfloaterchatmentionpicker.h"
 #include "llfocusmgr.h"
+// <PS>
 #include "lllocalcliprect.h"
+// </PS>
 #include "llscrollcontainer.h"
 #include "llworld.h"
 #include "rlvactions.h"
@@ -142,8 +144,10 @@ void FSNearbyChatControl::draw()
     applyTextPadding();
     drawBackground();
     LLChatEntry::draw();
+    // <PS>
     drawBorderOverlay();
     drawFullHeightCursor();
+    // </PS>
 }
 
 void FSNearbyChatControl::setTextPadding(S32 left, S32 right)
@@ -177,6 +181,7 @@ void FSNearbyChatControl::drawBackground()
 
     LLRect background_rect = getLocalRect();
     background_rect.stretch(-mBackgroundPad);
+// <PS>
 
     // Match LLLineEditor border alignment.
     background_rect.mTop -= 1;
@@ -199,6 +204,7 @@ void FSNearbyChatControl::drawBorderOverlay()
     background_rect.stretch(-mBackgroundPad);
     background_rect.mTop += 1;
     background_rect.mRight += 1;
+// </PS>
     if (background_rect.getWidth() <= 0 || background_rect.getHeight() <= 0)
     {
         return;
@@ -208,6 +214,7 @@ void FSNearbyChatControl::drawBorderOverlay()
     if (hasFocus())
     {
         LLColor4 focus_color = gFocusMgr.getFocusColor();
+        // <PS>
         // Match the color of the usual border tint
         const F32 focus_tint_scale = 0.82f;
         const F32 focus_alpha_scale = 0.75f;
@@ -215,7 +222,9 @@ void FSNearbyChatControl::drawBorderOverlay()
         focus_color.mV[1] *= focus_tint_scale;
         focus_color.mV[2] *= focus_tint_scale;
         focus_color.setAlpha(alpha * focus_alpha_scale);
+        // </PS>
 
+        // <PS>
         // Draw focus outline
         const S32 focus_width = llmax(1, gFocusMgr.getFocusFlashWidth());
         for (S32 i = 0; i < focus_width; ++i)
@@ -229,6 +238,7 @@ void FSNearbyChatControl::drawBorderOverlay()
             gl_rect_2d(focus_rect, focus_color, false);
         }
     }
+        // </PS>
 
     // LLLineEditor-style subtle inner shade ring.
     if (background_rect.getWidth() > 2 && background_rect.getHeight() > 2)
@@ -239,16 +249,21 @@ void FSNearbyChatControl::drawBorderOverlay()
         LLColor4 inner_shade = LLColor4::black;
         const F32 inner_alpha = getReadOnly() ? 0.12f : (hasFocus() ? 0.10f : 0.16f);
         inner_shade.setAlpha(alpha * inner_alpha);
+        // <PS>
         gl_rect_2d(inner_border_rect, inner_shade, false);
     }
 }
+        // </PS>
 
+// <PS>
 void FSNearbyChatControl::drawFullHeightCursor()
 {
     if (!hasFocus() || getReadOnly() || !gFocusMgr.getAppHasFocus())
     {
         return;
+// </PS>
     }
+// <PS>
 
     const F32 elapsed = mCursorBlinkTimer.getElapsedTimeF32();
     if (elapsed >= 1.0f && !(S32(elapsed * 2) & 1))
@@ -270,10 +285,12 @@ void FSNearbyChatControl::drawFullHeightCursor()
     gGL.color4fv(cursor_color.mV);
     LLLocalClipRect clip(content_rect, true);
     gl_rect_2d(cursor_rect);
+// </PS>
 }
 
 void FSNearbyChatControl::applyTextPadding()
 {
+    // <PS>
     const S32 right_overlay_clip = 2;
 
     if (mScroller)
@@ -288,6 +305,7 @@ void FSNearbyChatControl::applyTextPadding()
         }
     }
 
+    // </PS>
     LLRect base_rect = mScroller ? mScroller->getContentWindowRect() : getLocalRect();
 
     const LLRect local_rect = getLocalRect();
