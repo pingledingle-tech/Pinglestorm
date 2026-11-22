@@ -398,6 +398,7 @@ public:
     void experienceChanged();
 
     void setObjectName(std::string name) { mObjectName = name; }
+    const std::string& getObjectName() { return mObjectName; } // <FS:Trish/> FIRE-32374
 
 private:
     virtual bool canClose();
