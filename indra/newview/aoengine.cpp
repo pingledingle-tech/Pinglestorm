@@ -3852,6 +3852,7 @@ void AOEngine::onRegionChange()
 
     reassertAlwaysAnimations(false);
 
+    // <PS>
     // FIRE-35825: Transient animations (ground sit, jump, landing, standing up) are managed by the
     // simulator's own agent state. After a region change, reset to standing to avoid getting stuck.
     if (mLastMotion == ANIM_AGENT_SIT_GROUND ||
@@ -3865,6 +3866,7 @@ void AOEngine::onRegionChange()
         setLastMotion(ANIM_AGENT_STAND);
         return;
     }
+    // </PS>
 
     // sitting needs special attention
     if (mLastMotion == ANIM_AGENT_SIT)
