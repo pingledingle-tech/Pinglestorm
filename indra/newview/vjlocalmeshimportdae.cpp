@@ -35,7 +35,9 @@
 #include <llmodelloader.h>
 #include "llvoavatarself.h"
 #include <lldaeloader.h> // for preProcessDAE
+// <PS>
 #include "lluri.h" // for LLURI::escape
+// </PS>
 #include <llerror.h>
 
 /* dae headers*/
@@ -61,6 +63,7 @@ LLLocalMeshImportDAE::loadFile_return LLLocalMeshImportDAE::loadFile(const std::
     daeDatabase* collada_db             = nullptr;
     setLod(lod);
 
+    // <PS>
     // FIRE-34069: Collada expects an escaped URI, like LLDAELoader::OpenFile() does,
     // otherwise characters such as '#' in folder names break opening the file
     const char* allowed =
@@ -69,17 +72,22 @@ LLLocalMeshImportDAE::loadFile_return LLLocalMeshImportDAE::loadFile(const std::
         "0123456789"
         "%-._~:\"|\\/";
     const std::string uri_filename = LLURI::escape(filename, allowed);
+    // </PS>
 
     // open file and check if opened
     if (gSavedSettings.getBOOL("ImporterPreprocessDAE"))
     {
         LL_DEBUGS("LocalMesh") << "Performing dae preprocessing" << LL_ENDL;
+        // <PS>
         collada_dom = collada_core.openFromMemory(uri_filename, LLDAELoader::preprocessDAE(filename).c_str());
+        // </PS>
     }
     else
     {
         LL_INFOS() << "Skipping dae preprocessing" << LL_ENDL;
+        // <PS>
         collada_dom = collada_core.open(uri_filename);
+        // </PS>
     }
 
     if (!collada_dom)
@@ -88,7 +96,9 @@ LLLocalMeshImportDAE::loadFile_return LLLocalMeshImportDAE::loadFile(const std::
         return loadFile_return(false, mLoadingLog);
     }
 
+    // <PS>
     collada_document = collada_core.getDoc(uri_filename);
+    // </PS>
     if (!collada_document)
     {
         pushLog("DAE Importer", "Collada file contained no collada document.");
