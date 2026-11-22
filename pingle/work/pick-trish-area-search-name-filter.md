@@ -1,6 +1,6 @@
 Branch: pick/trish-area-search-name-filter
-Status: active
-Pull request: pending
+Status: done
+Pull request: #38
 Files:
 - indra/newview/fsareasearch.cpp
 - pingle/PICKS.md
