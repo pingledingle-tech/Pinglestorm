@@ -1,6 +1,6 @@
 Branch: docs/t15-remaining-small-fixes
-Status: active
-Pull request: pending
+Status: done
+Pull request: #34
 Files:
 - pingle/T15_REMAINING_FIXES.md
 - pingle/TASKS.md
