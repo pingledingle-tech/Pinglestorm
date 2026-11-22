@@ -1,6 +1,6 @@
 Branch: pick/trish-copy-nocopy-as-link
-Status: active
-Pull request: pending
+Status: done
+Pull request: #43
 Files:
 - indra/llui/llfolderview.cpp
 - indra/llui/llfolderviewmodel.h
