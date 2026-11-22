@@ -1,6 +1,6 @@
 Branch: pick/trish-inventory-copypaste
-Status: active
-Pull request: pending
+Status: done
+Pull request: #42
 Files:
 - indra/newview/app_settings/settings.xml
 - indra/newview/llinventorybridge.cpp
