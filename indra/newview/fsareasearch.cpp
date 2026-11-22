@@ -1084,6 +1084,7 @@ void FSAreaSearch::matchObject(FSObjectProperties& details, LLViewerObject* obje
     owner_name = RLVa_hideNameIfRestricted(owner_name);
     last_owner_name = RLVa_hideNameIfRestricted(last_owner_name);
 
+    // <PS>
     // FIRE-35212: The displayed name is setting-depending and can fail to find a user if the
     // format entered in the search input does not match the format used in the UI.
     // This matches the behavior of other LL floaters
@@ -1106,6 +1107,7 @@ void FSAreaSearch::matchObject(FSObjectProperties& details, LLViewerObject* obje
         }
         return matches(av_name.getLegacyName()) || matches(av_name.getAccountName()) || matches(av_name.getDisplayName(true));
     };
+    // </PS>
 
     if (mRegexSearch)
     {
@@ -1119,7 +1121,9 @@ void FSAreaSearch::matchObject(FSObjectProperties& details, LLViewerObject* obje
             {
                 return;
             }
+            // <PS>
             if (!mSearchOwner.empty() && !name_matches(details.ownership_id, owner_name, details.group_owned, mSearchOwner, mRegexSearchOwner))
+            // </PS>
             {
                 return;
             }
@@ -1127,11 +1131,15 @@ void FSAreaSearch::matchObject(FSObjectProperties& details, LLViewerObject* obje
             {
                 return;
             }
+            // <PS>
             if (!mSearchCreator.empty() && !name_matches(details.creator_id, creator_name, false, mSearchCreator, mRegexSearchCreator))
+            // </PS>
             {
                 return;
             }
+            // <PS>
             if (!mSearchLastOwner.empty() && !name_matches(details.last_owner_id, last_owner_name, false, mSearchLastOwner, mRegexSearchLastOwner))
+            // </PS>
             {
                 return;
             }
@@ -1163,7 +1171,9 @@ void FSAreaSearch::matchObject(FSObjectProperties& details, LLViewerObject* obje
         {
             return;
         }
+        // <PS>
         if (!mSearchOwner.empty() && !name_matches(details.ownership_id, owner_name, details.group_owned, mSearchOwner, mRegexSearchOwner))
+        // </PS>
         {
             return;
         }
@@ -1171,11 +1181,15 @@ void FSAreaSearch::matchObject(FSObjectProperties& details, LLViewerObject* obje
         {
             return;
         }
+        // <PS>
         if (!mSearchCreator.empty() && !name_matches(details.creator_id, creator_name, false, mSearchCreator, mRegexSearchCreator))
+        // </PS>
         {
             return;
         }
+        // <PS>
         if (!mSearchLastOwner.empty() && !name_matches(details.last_owner_id, last_owner_name, false, mSearchLastOwner, mRegexSearchLastOwner))
+        // </PS>
         {
             return;
         }
