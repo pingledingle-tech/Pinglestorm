@@ -1,6 +1,6 @@
 Branch: pick/trish-script-close-warning
-Status: active
-Pull request: pending
+Status: done
+Pull request: #37
 Files:
 - indra/newview/llpreviewscript.cpp
 - indra/newview/llpreviewscript.h
