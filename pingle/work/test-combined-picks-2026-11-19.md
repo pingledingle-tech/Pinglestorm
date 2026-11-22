@@ -1,5 +1,5 @@
 Branch: test/combined-picks-2026-11-19
-Status: active
+Status: done
 Pull request: #14
 Files:
 - pingle/**
