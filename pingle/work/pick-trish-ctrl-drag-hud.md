@@ -1,6 +1,6 @@
 Branch: pick/trish-ctrl-drag-hud
-Status: active
-Pull request: pending
+Status: done
+Pull request: #44
 Files:
 - indra/newview/CMakeLists.txt
 - indra/newview/app_settings/settings.xml
