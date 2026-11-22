@@ -731,6 +731,7 @@ bool LLInvFVBridge::isClipboardPasteable() const
     return true;
 }
 
+// <PS>
 // <FS:Trish> "Paste As Link" context menu entry and Ctrl+Shift+V
 bool LLInvFVBridge::canPasteAsLink() const
 {
@@ -738,6 +739,7 @@ bool LLInvFVBridge::canPasteAsLink() const
     return inventory_linking && !isLockedFolder() && isClipboardPasteableAsLink();
 }
 // </FS:Trish>
+// </PS>
 
 bool LLInvFVBridge::isClipboardPasteableAsLink() const
 {
@@ -1067,6 +1069,7 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
     {
         items.push_back(std::string("Paste"));
     }
+    // <PS>
     // <FS:Trish> FSPasteNoCopyAsLink: An item pastes into its folder, which can also take no-copy items as links
     //if (!isClipboardPasteable() || ((flags & FIRST_SELECTED_ITEM) == 0))
     bool can_paste = isClipboardPasteable();
@@ -1076,6 +1079,7 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
     }
     if (!can_paste || ((flags & FIRST_SELECTED_ITEM) == 0))
     // </FS:Trish>
+    // </PS>
     {
         disabled_items.push_back(std::string("Paste"));
     }
@@ -1088,10 +1092,12 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
         )
     {
         items.push_back(std::string("Paste As Link"));
+        // <PS>
         // <FS:Trish> Same check as Ctrl+Shift+V
         //if (!isClipboardPasteableAsLink() || (flags & FIRST_SELECTED_ITEM) == 0)
         if (!canPasteAsLink() || (flags & FIRST_SELECTED_ITEM) == 0)
         // </FS:Trish>
+        // </PS>
         {
             disabled_items.push_back(std::string("Paste As Link"));
         }
@@ -2927,10 +2933,12 @@ bool LLFolderBridge::isItemLinkable() const
 
 bool LLFolderBridge::isClipboardPasteable() const
 {
+    // <PS>
     // <FS:Trish> FSPasteNoCopyAsLink: No-copy items can be pasted as links
     //if ( ! LLInvFVBridge::isClipboardPasteable() )
     if (!LLInvFVBridge::isClipboardPasteable() && !isClipboardPasteableMixed())
     // </FS:Trish>
+    // </PS>
         return false;
 
     // Don't allow pasting duplicates to the Calling Card/Friends subfolders, see bug EXT-1599
@@ -2961,6 +2969,7 @@ bool LLFolderBridge::isClipboardPasteable() const
     return true;
 }
 
+// <PS>
 // <FS:Trish> FSPasteNoCopyAsLink: Paste copies of what can be copied and links of no-copy items
 void LLFolderBridge::splitClipboardForMixedPaste(const std::vector<LLUUID>& objects, std::vector<LLUUID>& copy_ids, std::vector<LLUUID>& link_ids) const
 {
@@ -3101,6 +3110,7 @@ void LLFolderBridge::doPasteMixedFromClipboard()
     set_clipboard(objects);
 }
 // </FS:Trish>
+// </PS>
 
 bool LLFolderBridge::isClipboardPasteableAsLink() const
 {
@@ -4627,6 +4637,7 @@ void LLFolderBridge::updateHierarchyCreationDate(time_t date)
 
 void LLFolderBridge::pasteFromClipboard()
 {
+    // <PS>
     // <FS:Trish> FSPasteNoCopyAsLink: Copy what can be copied, link the no-copy items
     if (isClipboardPasteableMixed())
     {
@@ -4634,6 +4645,7 @@ void LLFolderBridge::pasteFromClipboard()
         return;
     }
     // </FS:Trish>
+    // </PS>
 
     LLInventoryModel* model = getInventoryModel();
     if (model && isClipboardPasteable())

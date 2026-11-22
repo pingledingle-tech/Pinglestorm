@@ -134,9 +134,11 @@ public:
     virtual bool isCutToClipboard();
     virtual bool isClipboardPasteable() const;
     virtual bool isClipboardPasteableAsLink() const;
+    // <PS>
     // <FS:Trish>
     bool canPasteAsLink() const;
     // </FS:Trish>
+    // </PS>
     virtual void pasteFromClipboard() {}
     virtual void pasteLinkFromClipboard() {}
     void getClipboardEntries(bool show_asset_id, menuentry_vec_t &items,
@@ -372,12 +374,14 @@ public:
     virtual bool isProtected() const;
 
 protected:
+    // <PS>
     // <FS:Trish> FSPasteNoCopyAsLink: Paste copies what can be copied and links the no-copy items
     bool isClipboardPasteableMixed() const;
     void pasteMixedFromClipboard();
     void doPasteMixedFromClipboard();
     void splitClipboardForMixedPaste(const std::vector<LLUUID>& objects, std::vector<LLUUID>& copy_ids, std::vector<LLUUID>& link_ids) const;
     // </FS:Trish>
+    // </PS>
 
     void buildContextMenuOptions(U32 flags, menuentry_vec_t& items,   menuentry_vec_t& disabled_items);
     void buildContextMenuFolderOptions(U32 flags, menuentry_vec_t& items,   menuentry_vec_t& disabled_items);

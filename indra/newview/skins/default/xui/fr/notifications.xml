@@ -5943,6 +5943,7 @@ Cela supprime uniquement le dossier et ses liens favoris. Les éléments origina
 Les noms de dossier ne doivent pas contenir / ou \.
 			<usetemplate name="okbutton" yestext="OK"/>
 	</notification>
+	<!-- <PS> -->
 	<notification name="FSPasteNoCopyAsLinkPrompt">
 		Voulez-vous coller les objets non copiables sélectionnés en tant que liens ?
 (Ce paramètre peut être modifier dans les paramètres d'inventaire.)
@@ -5952,4 +5953,5 @@ Les noms de dossier ne doivent pas contenir / ou \.
 			<button ignore="Ne jamais coller en tant que liens" name="No" text="Non"/>
 		</form>
 	</notification>
+	<!-- </PS> -->
 </notifications>

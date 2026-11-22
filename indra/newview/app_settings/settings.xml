@@ -344,6 +344,7 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <!-- <PS> -->
   <key>FSPasteNoCopyAsLink</key>
   <map>
     <key>Comment</key>
@@ -355,6 +356,7 @@
     <key>Value</key>
     <integer>0</integer>
   </map>
+  <!-- </PS> -->
   <key>FSPaymentInfoInChat</key>
   <map>
     <key>Comment</key>

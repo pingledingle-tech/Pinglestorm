@@ -8,6 +8,7 @@
  width="483"
  name="inventory_settings"
  title="Inventory Settings">
+ <!-- <PS> FSPasteNoCopyAsLink: floater height 483 -> 543 for the new check box </PS> -->
  <icon
   follows="top|left"
   height="18"
@@ -288,6 +289,7 @@
       name="0"
       value="0"/>
   </combo_box>
+  <!-- <PS> -->
   <!-- <FS:Trish> Paste no-copy items as links -->
   <icon
    follows="top|left"
@@ -325,4 +327,5 @@
    label_text.text_color="White"
    initial_value="false"/>
   <!-- </FS:Trish> -->
+  <!-- </PS> -->
 </floater>

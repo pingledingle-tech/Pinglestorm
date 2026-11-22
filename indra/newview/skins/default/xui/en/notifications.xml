@@ -15545,6 +15545,7 @@ Folder names cannot contain / or \.
   </notification>
   <!-- </FS:Amy> Favorite Wearables folders -->
 
+  <!-- <PS> -->
   <!-- <FS:Trish> Paste no-copy items as links -->
   <notification
    icon="alertmodal.tga"
@@ -15571,5 +15572,6 @@ Do you want to paste selected no-copy objects as links?
     </form>
   </notification>
   <!-- </FS:Trish> -->
+  <!-- </PS> -->
 
 </notifications>

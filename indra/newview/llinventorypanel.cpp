@@ -2595,6 +2595,7 @@ bool LLInventoryPanel::handleKeyHere( KEY key, MASK mask )
             handled = true;
         }
         break;
+    // <PS>
     // <FS:Trish> Ctrl+Shift+V pastes as link
     case 'V':
         if (mask == (MASK_CONTROL | MASK_SHIFT))
@@ -2609,6 +2610,7 @@ bool LLInventoryPanel::handleKeyHere( KEY key, MASK mask )
         }
         break;
     // </FS:Trish>
+    // </PS>
     }
     return handled;
 }

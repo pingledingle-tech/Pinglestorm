@@ -1591,6 +1591,7 @@ void settings_setup_listeners()
 #endif
     // </FS:Zi>
 
+    // <PS>
     // <FS:Trish> FSPasteNoCopyAsLink asks every time if off
     setting_setup_signal_listener(gSavedSettings, "FSPasteNoCopyAsLink", [](const LLSD& newvalue)
     {
@@ -1600,6 +1601,7 @@ void settings_setup_listeners()
         }
     });
     // </FS:Trish>
+    // </PS>
 }
 
 #if TEST_CACHED_CONTROL
