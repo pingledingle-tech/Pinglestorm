@@ -82,7 +82,9 @@
 // [/RLVa:KB]
 
 #include "llviewernetwork.h"    // <FS:CR> For prim equivilance hiding
+// <PS>
 #include "fstoolhudmove.h"      // <FS:Trish> Ctrl+drag moves a HUD
+// </PS>
 
 extern bool gDebugClicks;
 
@@ -297,6 +299,7 @@ bool LLToolPie::handleLeftClickPick()
         parent = object->getRootEdit();
     }
 
+    // <PS>
     // <FS:Trish> Ctrl+drag on a HUD moves it, without the build tools; the HUD move tool takes the mouse
     if (FSToolHudMove::getInstance()->start(mPick))
     {
@@ -304,6 +307,7 @@ bool LLToolPie::handleLeftClickPick()
         return true;
     }
     // </FS:Trish>
+    // </PS>
 
     if (handleMediaClick(mPick))
     {
@@ -933,6 +937,7 @@ bool LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 
         LLViewerObject* click_action_object = click_action_pick.getObject();
 
+        // <PS>
         // <FS:Trish> Ctrl over a HUD that Ctrl+drag can move
         if (FSToolHudMove::movable(object, mask))
         {
@@ -940,6 +945,7 @@ bool LLToolPie::handleHover(S32 x, S32 y, MASK mask)
         }
         else if (click_action_object && useClickAction(mask, click_action_object, click_action_object->getRootEdit()))
         // </FS:Trish>
+        // </PS>
         {
             ECursorType cursor = cursorFromObject(click_action_object);
             gViewerWindow->setCursor(cursor);
@@ -1872,12 +1878,14 @@ LLTool* LLToolPie::getOverrideTool(MASK mask)
     static LLCachedControl<bool> enable_grab(gSavedSettings, "EnableGrab");
     if (enable_grab)
     {
+        // <PS>
         // <FS:Trish> Ctrl over a HUD Ctrl+drag takes priority over an inworld rezzed objects.
         if (FSToolHudMove::overMovableHUD(mask))
         {
             return LLTool::getOverrideTool(mask);
         }
         // </FS:Trish>
+        // </PS>
         if (mask == DEFAULT_GRAB_MASK)
         {
             return LLToolGrab::getInstance();

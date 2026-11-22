@@ -19439,6 +19439,7 @@ Change of this parameter will affect the layout of buttons in notification toast
 			<key>Value</key>
 			<string>pstcampos</string>
 		</map>
+		<!-- <PS> -->
 		<key>FSCtrlDragHUDs</key>
 		<map>
 			<key>Comment</key>
@@ -19450,6 +19451,7 @@ Change of this parameter will affect the layout of buttons in notification toast
 			<key>Value</key>
 			<integer>0</integer>
 		</map>
+		<!-- </PS> -->
 		<key>FSCmdLineRollDice</key>
 		<map>
 			<key>Comment</key>
