@@ -1,6 +1,6 @@
 Branch: pick/trish-area-search-build-mode
-Status: active
-Pull request: pending
+Status: done
+Pull request: #39
 Files:
 - indra/newview/fsareasearch.cpp
 - pingle/PICKS.md
