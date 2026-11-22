@@ -80,6 +80,10 @@ private:
     void onKeystroke(LLTextEditor* caller);
 
     void drawBackground();
+    // <PS>
+    void drawBorderOverlay();
+    void drawFullHeightCursor();
+    // </PS>
     void applyTextPadding();
 
     // Unfocus and autohide chat bar accordingly if we are the default chat bar

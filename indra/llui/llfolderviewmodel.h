@@ -178,6 +178,11 @@ public:
     virtual void removeBatch(std::vector<LLFolderViewModelItem*>& batch) = 0;
 
     virtual bool isItemCopyable(bool can_copy_as_link = true) const = 0;
+    // <PS>
+    // <FS:Trish> FIRE-36930 No copy item should be pastable as links
+    virtual bool isItemLinkable() const { return false; }
+    // </FS:Trish>
+    // </PS>
     virtual bool copyToClipboard() const = 0;
     virtual bool cutToClipboard() = 0;
     virtual bool isCutToClipboard() { return false; };

@@ -98,12 +98,13 @@
      width="80" />
 
         </layout_panel>
+        <!-- <PS> FIRE-34952: widths 120 -> 145 for the time zone text (here and on the timestamp below) </PS> -->
         <layout_panel
          visibility_control="FSTeleportHistoryShowDate"
          name="lp_date"
          auto_resize="false"
          height="25"
-         width="120"
+         width="145"
          layout="topleft"
          visible="false"
          follows="top|left|right">
@@ -118,7 +119,7 @@
      text_color="White"
      top="4"
      value="01/01/2000 12:00PM"
-     width="120" />
+     width="145" />
 
         </layout_panel>
     </layout_stack>
