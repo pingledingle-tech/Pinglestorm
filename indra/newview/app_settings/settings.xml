@@ -391,13 +391,17 @@
   <key>FSTPHistoryTZ</key>
   <map>
     <key>Comment</key>
+    <!-- <PS> -->
     <string>Select the timezone to be used with Teleport History. ('utc' = Coordinated Universal Time, 'slt' = Second Life Time (default), 'local' = the local timezone of the client)</string>
+    <!-- </PS> -->
     <key>Persist</key>
     <integer>1</integer>
     <key>Type</key>
     <string>String</string>
     <key>Value</key>
+    <!-- <PS> -->
     <string>slt</string>
+    <!-- </PS> -->
   </map>
   <key>ShowStreamMetadata</key>
   <map>
