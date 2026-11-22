@@ -1,6 +1,6 @@
 Branch: pick/trish-ao-stuck-region-change
-Status: active
-Pull request: pending
+Status: done
+Pull request: #40
 Files:
 - indra/newview/aoengine.cpp
 - pingle/PICKS.md
