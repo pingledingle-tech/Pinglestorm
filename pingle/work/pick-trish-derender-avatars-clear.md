@@ -1,6 +1,6 @@
 Branch: pick/trish-derender-avatars-clear
-Status: active
-Pull request: pending
+Status: done
+Pull request: #35
 Files:
 - indra/newview/llavataractions.cpp
 - pingle/PICKS.md
