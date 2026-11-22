@@ -1,6 +1,6 @@
 Branch: pick/trish-nearbychat-bar-styling
-Status: active
-Pull request: pending
+Status: done
+Pull request: #45
 Files:
 - indra/newview/fsnearbychatcontrol.cpp
 - indra/newview/fsnearbychatcontrol.h
