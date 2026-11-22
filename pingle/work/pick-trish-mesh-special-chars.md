@@ -1,6 +1,6 @@
 Branch: pick/trish-mesh-special-chars
-Status: active
-Pull request: pending
+Status: done
+Pull request: #36
 Files:
 - indra/newview/vjlocalmeshimportdae.cpp
 - pingle/PICKS.md
