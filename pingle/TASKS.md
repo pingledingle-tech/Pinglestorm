@@ -71,7 +71,7 @@ The source is a frozen copy of another fork, stored in this repository as branch
 
 - [ ] T15 Go through the remaining ~20 small fix branches in the snapshot and list them for the project owner to choose from. A list only, no picks.
   - Source: the other `snapshot/trish-2026-11-19/*` branches
-  - Status: Not started. Not checked whether it applies on Firestorm 7.2.5. Not built, not tried.
+  - Status: List done (see `pingle/T15_REMAINING_FIXES.md`): 15 branches apply cleanly in a dry run on 7.2.5, 4 conflict, 3 are already in 7.2.5. No picks made. Not built, not tried.
 
 
 ## Step 3: Graphics and performance commits that applied cleanly in a dry run
