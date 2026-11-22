@@ -1,6 +1,6 @@
 Branch: pick/trish-nearbychat-large-font-cutoff
-Status: active
-Pull request: pending
+Status: done
+Pull request: #46
 Files:
 - indra/newview/fsnearbychatcontrol.cpp
 - pingle/PICKS.md
