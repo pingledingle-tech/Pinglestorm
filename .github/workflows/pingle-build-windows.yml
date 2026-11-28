@@ -1,0 +1,113 @@
+name: Pingle build Windows
+
+# Manual only: a full viewer build is heavy. Start it from the Actions tab
+# ("Run workflow") or with the workflow dispatch API. It never runs on pull
+# requests or pushes.
+# Open configuration only (ReleaseFS_open): no FMOD, no KDU, no secrets.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  AUTOBUILD_VSVER: "170"        # Visual Studio 2022
+  AUTOBUILD_VARIABLES_FILE: ${{ github.workspace }}/build-variables/variables
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          repository: FirestormViewer/fs-build-variables
+          path: build-variables
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - name: Install autobuild
+        shell: bash
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install git+https://github.com/secondlife/autobuild.git#egg=autobuild
+          autobuild --version
+      - name: Configure (open build, packaged)
+        shell: bash
+        # --package turns on Firestorm's packaging step (viewer_manifest.py with
+        # the "copy package" actions). Without it the build only copies the
+        # binaries and leaves out app_settings/*.xml, shaders and skins/, so the
+        # program stops at start with "Missing Files".
+        run: autobuild configure -A 64 -c ReleaseFS_open -- --package --chan Pinglestorm
+      - name: Show the installer tool (NSIS) used by the packaging step
+        shell: bash
+        run: ls -l "/c/Program Files (x86)/NSIS/makensis.exe" "/c/Program Files/NSIS/makensis.exe" 2>&1 || true
+      - name: Build
+        shell: bash
+        run: autobuild build -A 64 -c ReleaseFS_open --no-configure
+      - name: Keep the build folder listing
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: ls -d build-*/ build-*/newview/* 2>/dev/null | head -50 || true
+      - name: Assemble the program folder
+        shell: bash
+        # Copies the packaged program folder (build-*/newview/Release) without
+        # build leftovers. The exclude list is Firestorm's own list of what is
+        # not part of the program (viewer_manifest.py, velopack_package_finish),
+        # plus a few more debug and build files.
+        run: |
+          rel=$(ls -d build-*/newview/Release | head -1)
+          echo "Packaged folder: $rel"
+          python - "$rel" pinglestorm-windows <<'PY'
+          import json, os, re, shutil, sys
+          src, dst = sys.argv[1], sys.argv[2]
+          skip = re.compile(r'.*\.(pdb|map|bat|exp|lib|nsi|ilk|iobj|ipdb)$|.*\.tar\.(xz|bz2)$'
+                            r'|firestorm-bin\..*|.*_Setup\.exe$|.*-Setup\.exe$', re.I)
+          def ignore(folder, names):
+              return [n for n in names
+                      if os.path.isfile(os.path.join(folder, n)) and skip.fullmatch(n)]
+          shutil.copytree(src, dst, ignore=ignore)
+          exe = json.load(open(os.path.join(dst, 'build_data.json')))['Executable']
+          print('Program to start:', exe)
+          with open(os.environ['GITHUB_ENV'], 'a') as env:
+              env.write('PINGLE_EXE=%s\n' % exe)
+          PY
+          ls -1 "$rel" | grep -i -E 'setup\.exe$' || echo "No installer found (not needed)"
+      - name: Check the program folder
+        shell: bash
+        run: |
+          cd pinglestorm-windows
+          fail=0
+          for f in "$PINGLE_EXE" build_data.json SLPlugin.exe llwebrtc.dll openjp2.dll \
+                   app_settings/settings_files.xml app_settings/settings.xml \
+                   app_settings/shaders skins/skins.xml skins/default/xui/en/strings.xml \
+                   llplugin/media_plugin_cef.dll fonts; do
+            if [ -e "$f" ]; then echo "ok       $f"; else echo "MISSING  $f"; fail=1; fi
+          done
+          # Open build: no FMOD, no KDU library or program. (Skin pictures such
+          # as the FMOD logo in the credits are not libraries and are allowed.)
+          if find . -type f \( -iname '*.dll' -o -iname '*.exe' \) | grep -i -E 'fmod|kdu'; then
+            echo "Non-free library found"; fail=1
+          fi
+          echo "Top level, files and size per folder:"
+          for d in */; do echo "  $d $(find "$d" -type f | wc -l) files, $(du -sh "$d" | cut -f1)"; done
+          echo "Files: $(find . -type f | wc -l)"
+          echo "Size:  $(du -sh . | cut -f1)"
+          exit $fail
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pinglestorm-windows-base
+          path: pinglestorm-windows/
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: pinglestorm-windows-logs
+          path: build-*/logs/**
+          if-no-files-found: warn
+          retention-days: 7
